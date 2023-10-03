@@ -1,0 +1,18 @@
+.staff-info {
+    display: flex;
+    justify-content:space-between;
+    overflow: hidden;
+    animation: fade-in 0.3s linear;
+    
+  }
+  .staff-info.show {
+    max-height: 1000px; /* Set an appropriate value for the max height */
+    animation: fade-in 0.3s linear;
+  }
+
+  @keyframes fade-in {
+    0% {  opacity: 0; height: 0;}
+    100% { opacity:  1; height: 200px;}
+  }
+
+  

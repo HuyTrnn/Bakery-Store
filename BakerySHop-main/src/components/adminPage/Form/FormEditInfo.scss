@@ -1,0 +1,27 @@
+.form-info{
+    color: var(---color-nav-text) ;
+
+    &__title {
+        margin-bottom: 8px;
+    }
+
+    &__address {
+        display:flex;
+        flex-direction: column;
+        margin-bottom: 6px;
+        & select {
+            height: 28px;
+        }
+        & input {
+            border: 1px solid #000;
+            border-radius: 6px;
+            min-width: 430px;
+            height: 28px;
+            margin-bottom:6px;
+        }
+      
+    }
+    &__ship {
+        height: 100px;
+    }
+}

@@ -1,0 +1,55 @@
+.wrapper {
+  margin-top: 24px;
+
+  .account-header {
+    padding: 28px 12px;
+
+    .header-title {
+      font-size: 2.4rem;
+      color: var(---color-text);
+    }
+
+    .action-logout {
+      display: flex;
+      justify-content: flex-end;
+
+      .btn-logout {
+        font-size: 1.4rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(---color-text);
+        &:hover {
+          cursor: pointer;
+          opacity: 0.8;
+        }
+      }
+    }
+  }
+
+  .account-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 80px 40px;
+
+    .content-info {
+      display: flex;
+      color: var(---color-text);
+
+      margin-top: 10px;
+
+      .content-title {
+        margin-right: 20px;
+      }
+    }
+  }
+  .account-content {
+    display: flex;
+    justify-content: center;
+    margin: 80px;
+    .btn-admin {
+      color: var(---color-text);
+      padding: 12px;
+    }
+  }
+}

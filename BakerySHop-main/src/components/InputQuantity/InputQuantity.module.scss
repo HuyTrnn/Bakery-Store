@@ -1,0 +1,21 @@
+.wrapper {
+  display: flex;
+  max-width: fit-content;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid var(---color-a20);
+  .btn {
+    padding: 6px 8px;
+    color: var(---color-text);
+  }
+
+  .input {
+    text-align: center;
+    width: 32px;
+    color: var(---color-text);
+  }
+  input {
+    border: none;
+    outline: none;
+  }
+}

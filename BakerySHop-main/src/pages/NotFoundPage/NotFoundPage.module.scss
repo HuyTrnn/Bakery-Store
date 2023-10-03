@@ -1,0 +1,12 @@
+.wrapper {
+  background-color: var(---inverse-a90);
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  h1 {
+    font-size: 4rem;
+    padding-bottom: 15px;
+  }
+}

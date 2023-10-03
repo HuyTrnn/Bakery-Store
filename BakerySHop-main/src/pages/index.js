@@ -1,0 +1,14 @@
+export { default as HomePage } from "./HomePage";
+export { default as AboutPage } from "./AboutPage";
+export { default as CartPage } from "./CartPage";
+export { default as FagsPage } from "./FagsPage";
+export { default as LoginPage } from "./LoginPage";
+export { default as RegisterPage } from "./RegisterPage";
+export { default as Collections } from "./Collections";
+export { default as AccountPage } from "./AccountPage";
+export { default as NotFoundPage } from "./NotFoundPage";
+export { default as ProductTypePage } from "./ProductTypePage";
+export { default as ProductDetailPage } from "./ProductDetailPage";
+export { default as CheckoutPage } from "./CheckoutPage";
+export { default as PasswordResetPage } from "./PasswordResetPage";
+export { default as ResetPasswordPage } from "./ResetPasswordPage";

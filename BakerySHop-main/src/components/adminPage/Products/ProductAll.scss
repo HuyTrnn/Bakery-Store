@@ -1,0 +1,22 @@
+
+
+
+
+.productTypeEdit-page {
+    width: 100%;
+}
+
+.addproduct-form {
+    display: flex;
+    justify-content:center;
+    align-items:center;
+    padding: 32px;
+    border-radius: 28px;
+    background-color: #fff;
+    & button {
+            height: 52px;
+            width: 136px;
+            font-size: 15px;
+        
+    }
+}

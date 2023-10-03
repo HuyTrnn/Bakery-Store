@@ -1,0 +1,57 @@
+.panel {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 10;
+    justify-content: center;
+    transition: opacity linear 0.2s;
+}
+
+// .panel:target {
+//     visibility: visible;
+//     opacity: 1;
+// }
+
+.overlay {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.panel-body {
+    position: relative;
+    display: flex;
+    // justify-content:center;
+    min-height: 400px;
+    padding: 30px;
+    background-color: #fff;
+    min-width: 600px;
+    animation: fade-in1 0.4s ease-out;
+    border-radius: 20px;
+    color: var(---color-nav-text) ;
+    & h2 {
+        margin-bottom: 16px;
+    }
+
+    &--form {
+        display: flex;
+        flex-direction: column;
+    }
+    &__change {
+        width: 100%;
+    }
+}
+
+.close {
+    float: right;
+    cursor: pointer;
+}
+
+@keyframes fade-in1 {
+    0% {  opacity: 0; height: 0;}
+    100% { opacity:  1; height: 500px;}
+  }
+

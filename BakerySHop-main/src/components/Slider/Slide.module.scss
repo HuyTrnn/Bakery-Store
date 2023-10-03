@@ -1,0 +1,38 @@
+.carousel {
+  position: relative;
+  overflow-x: scroll;
+  scroll-snap-align: x mandatory;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  .carousel-action {
+    min-width: 100%;
+    min-height: 100%;
+    display: flex;
+    position: absolute;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .btn {
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: var(---color-a5);
+    color: var(---color-primary);
+    padding: 12px;
+  }
+
+  .container {
+    display: flex;
+    scroll-snap-align: center;
+
+    .slide {
+      scroll-snap-align: center;
+    }
+  }
+}

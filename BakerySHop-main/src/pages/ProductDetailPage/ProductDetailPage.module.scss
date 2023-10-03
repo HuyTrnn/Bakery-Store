@@ -1,0 +1,106 @@
+.product-wrapper-image {
+  max-width: 100%;
+  .product-image {
+    max-width: 100%;
+  }
+}
+
+.product-container {
+  display: flex;
+  flex-direction: column;
+
+  .product-content {
+    padding: 32px 0;
+    color: var(---color-text);
+    .product-name {
+      font-size: 3.2rem;
+      margin-bottom: 8px;
+    }
+    .product-price {
+      font-size: 1.6rem;
+    }
+  }
+
+  .product-actions {
+    margin: 16px 0;
+
+    .product-action {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(---color-primary);
+    }
+    .btn-purchase {
+      margin: 8px 0;
+      padding: 12px 0;
+      min-width: 100%;
+      font-size: 1.2rem;
+      font-weight: 400;
+      text-transform: uppercase;
+      color: var(---color-text);
+      border: 1px solid var(---color-primary);
+      letter-spacing: 1px;
+      &:hover {
+        background-color: var(---color-a5);
+      }
+      span {
+        opacity: 0.5;
+        padding-left: 4px;
+        padding-right: 4px;
+        border-radius: 50%;
+      }
+    }
+
+    .btn--sold-out {
+      cursor: not-allowed;
+      opacity: 0.4;
+    }
+  }
+
+  .product-note {
+    font-size: 1.2rem;
+    padding: 16px 8px;
+    font-style: italic;
+    color: var(---color-a80);
+  }
+}
+
+.modal-shadow {
+  position: fixed;
+  background-color: #fff;
+  inset: 0;
+  opacity: 0.4;
+}
+
+.modal-content {
+  position: fixed;
+  z-index: 999;
+  top: 35%;
+  right: 35%;
+  left: 35%;
+  bottom: 35%;
+  background-color: #fff;
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  flex-direction: column;
+  .modal-action {
+    display: flex;
+    justify-content: space-between;
+    padding: 18px 16px;
+    color: var(---color-primary);
+
+    .modal-action-btn {
+      padding: 8px 8px;
+    }
+  }
+
+  .modal-heading {
+    text-transform: uppercase;
+    color: var(---color-primary);
+    font-weight: 800;
+  }
+}

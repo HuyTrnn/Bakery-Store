@@ -1,0 +1,214 @@
+.checkout-wrapper {
+  background-color: var(---color-bg-accent);
+  .checkout--container {
+    background-color: var(---color-bg);
+    padding: 50px;
+
+    .name-store {
+      color: var(---color-primary);
+      margin-bottom: 20px;
+    }
+
+    .checkout-content {
+      margin-bottom: 20px;
+      .checkout-content--heading {
+        padding: 8px 0;
+        color: var(---color-text);
+      }
+
+      .order-info {
+        width: 100%;
+
+        .payment-type {
+          display: flex;
+          border: 1px solid var(---inverse-bg-accent);
+
+          border-radius: 4px;
+          padding: 12px 8px;
+          margin: 8px 4px;
+
+          .payment-type-content {
+            margin: 0 4px;
+          }
+
+          &.active {
+            color: var(---inverse-secondary);
+            border: 1px solid var(---color-primary);
+          }
+        }
+        .login-form {
+          margin: 12px 0;
+          display: flex;
+          flex-direction: column;
+
+          .input-select {
+            max-width: 100px;
+            border: 1px solid var(---color-a95);
+            padding: 10px 8px;
+            margin-top: 16px;
+          }
+          .form-input {
+            min-width: 400px;
+            padding: 10px 8px;
+            border: 1px solid var(---color-a95);
+            margin-top: 16px;
+            display: flex;
+            flex-direction: column-reverse;
+            min-height: 50px;
+            position: relative;
+            justify-content: center;
+
+            .form-input--label {
+              font-size: 1.1rem;
+              color: var(---color-text);
+              display: none;
+            }
+
+            input,
+            textarea {
+              width: 100%;
+              border: none;
+              outline: none;
+            }
+            input:not(:placeholder-shown) ~ .form-input--label {
+              display: block;
+              animation: moveUp 0.8s ease;
+            }
+
+            textarea {
+              min-height: 100px;
+            }
+            textarea:not(:placeholder-shown) ~ .form-input--label {
+              display: block;
+              animation: moveUp 0.8s ease;
+            }
+          }
+
+          .messenger-error {
+            padding: 8px;
+            color: #ff0000;
+            font-size: 1.3rem;
+          }
+
+          .actions {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 16px;
+            margin-top: 20px;
+
+            .btn-cart {
+              display: flex;
+              align-items: center;
+              color: var(---color-text);
+            }
+            .btn-order {
+              margin-top: 16px;
+              color: var(---inverse-text);
+              padding: 20px 32px;
+              background-color: var(---inverse-primary);
+            }
+          }
+        }
+      }
+    }
+
+    .checkout-container--heading {
+      padding: 16px 0;
+      color: var(---color-primary);
+    }
+
+    .list-order {
+      .product {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .product-info {
+          display: flex;
+          align-items: center;
+          .product-image {
+            width: 80px;
+            height: 80px;
+            background-size: cover;
+            position: relative;
+
+            .product-quantity {
+              position: absolute;
+              right: 0;
+              font-size: 1.2rem;
+              padding: 4px;
+              background-color: var(---inverse-a35);
+              border-radius: 50%;
+            }
+          }
+
+          .product-name {
+            margin-left: 8px;
+          }
+        }
+      }
+    }
+
+    .price {
+      padding: 16px 0;
+      display: flex;
+      position: relative;
+      justify-content: space-between;
+      &::before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        top: 0;
+        border: 1px solid var(---color-a80);
+      }
+    }
+  }
+}
+@keyframes moveUp {
+  from {
+    transform: translateY(8px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.modal-shadow {
+  position: fixed;
+  background-color: #fff;
+  inset: 0;
+  opacity: 0.4;
+}
+
+.modal-content {
+  position: fixed;
+  z-index: 999;
+  top: 35%;
+  right: 35%;
+  left: 35%;
+  bottom: 35%;
+  background-color: #fff;
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  flex-direction: column;
+  .modal-action {
+    display: flex;
+    justify-content: space-between;
+    padding: 18px 16px;
+    color: var(---color-primary);
+
+    .modal-action-btn {
+      padding: 8px 8px;
+    }
+  }
+
+  .modal-heading {
+    text-transform: uppercase;
+    color: var(---color-primary);
+    font-weight: 800;
+  }
+}

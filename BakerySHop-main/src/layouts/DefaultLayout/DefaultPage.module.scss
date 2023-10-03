@@ -1,0 +1,11 @@
+.wrapper {
+  overflow: hidden;
+}
+
+.container.pt {
+  padding-top: var(---header-height);
+}
+@media (max-width: 740px) {
+  .container {
+  }
+}
