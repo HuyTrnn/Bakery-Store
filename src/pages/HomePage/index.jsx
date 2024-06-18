@@ -232,7 +232,7 @@ function HomePage() {
   return (
     <div>
       <Helmet>
-        <title>BÁNH SÀI GÒN – BAKES SAIGON</title>
+        <title>Trang chủ – HK SHOP</title>
       </Helmet>
       {/* {banner} */}
       <div className={cx("grid")}>

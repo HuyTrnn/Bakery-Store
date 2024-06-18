@@ -10,7 +10,7 @@ function TopBar() {
         <div className={cx("row")}>
           <div className={cx("c-12", "col")}>
             <div className={cx("top-header--content")}>
-              <p>Bakery shop</p>
+              <p>Have good day Brand ®</p>
             </div>
           </div>
         </div>
