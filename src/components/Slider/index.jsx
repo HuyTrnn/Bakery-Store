@@ -8,7 +8,7 @@ const cx = classNames.bind(styles);
 
 function Slider({ data, quantityDisplayed = 1 }) {
   const [slideIndex, setSlideIndex] = useState(0);
-  const lengthSlide = data.length - quantityDisplayed;
+  const lengthSlide = data && data.length - quantityDisplayed;
 
   const nextSlide = () => {
     setSlideIndex(slideIndex + 1);
@@ -25,14 +25,6 @@ function Slider({ data, quantityDisplayed = 1 }) {
   const slideShow = {
     minWidth: `${100 / quantityDisplayed}%`,
   };
-
-  const renderData = data.map((item) => {
-    return (
-      <div className={cx("slide")} style={slideShow} key={item.id}>
-        <Card content={item} />
-      </div>
-    );
-  });
 
   return (
     <div className={cx("carousel")}>
@@ -55,7 +47,12 @@ function Slider({ data, quantityDisplayed = 1 }) {
       </div>
 
       <div className={cx("container")} style={trackStyles}>
-        {renderData}
+        {data &&
+          data.map((item, index) => (
+            <div className={cx("slide")} style={slideShow} key={item.id}>
+              <Card content={item} />
+            </div>
+          ))}
       </div>
     </div>
   );

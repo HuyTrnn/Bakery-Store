@@ -32,6 +32,25 @@ function Header() {
     doFetchCollections();
   }, [doFetchCollections]);
 
+  const collection = [
+    {
+      id: "wallet",
+      name: "Wallet",
+    },
+    {
+      id: "backpack",
+      name: "Backpack",
+    },
+    {
+      id: "tote",
+      name: "Tote",
+    },
+    {
+      id: "crossbag",
+      name: "Cross bag",
+    },
+  ];
+
   // hidden top bar
   document.addEventListener("scroll", (e) => {
     let scrollVal = e.target.documentElement.scrollTop;
@@ -48,26 +67,6 @@ function Header() {
 
   const logoSrc =
     "https://cdn.shopify.com/s/files/1/2675/2320/files/BAKES__Logo-06_220x.png?v=1638454703";
-
-  let subNav;
-
-  if (isLoading) {
-    subNav = <h1>Loading</h1>;
-  } else if (error) {
-    subNav = <h1>Lỗi òi</h1>;
-  } else if (data) {
-    subNav = data.map((collection) => {
-      return (
-        <Link
-          to={`/collections/${collection.id}`}
-          className={cx("sub-nav-item")}
-          key={collection.id}
-        >
-          {collection.name}
-        </Link>
-      );
-    });
-  }
 
   const handleOpen = () => {
     setIsOpen(true);
@@ -157,7 +156,15 @@ function Header() {
                             tabIndex="-1"
                             {...attrs}
                           >
-                            {subNav}
+                            {collection.map((item, index) => (
+                              <Link
+                                to={`/collections/${item.id}`}
+                                className={cx("sub-nav-item")}
+                                key={item.id}
+                              >
+                                {item.name}
+                              </Link>
+                            ))}
                           </div>
                         )}
                       >

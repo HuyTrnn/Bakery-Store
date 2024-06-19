@@ -6,7 +6,7 @@ const obtainAccessToken = createAsyncThunk(
   async (data, thunkAPI) => {
     try {
       const response = await axios.post(
-        "http://localhost:81/api/auth/login",
+        "https://backpack-nu.vercel.app/api/auth/login",
         data
       );
 

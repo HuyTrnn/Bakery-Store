@@ -46,7 +46,7 @@ function Card({ content }) {
     </div>
   );
   const price = usePriceFormatter(
-    content.unit_price ? content.unit_price : 0,
+    content.price ? content.price : 0,
     "VND"
   );
 
@@ -76,14 +76,17 @@ function Card({ content }) {
       <Link to={`/collections/${content.id_type}/${content.id}`}>
         <div className={cx("container")}>
           <div className={cx("container-img")}>
-            <img src={`data:image/png;base64,${content.image}`} alt="product" />
-            {content.new ? (
+            <img src={content.images[0]} alt="product" />
+            {/* {content.new ? (
               <div className={cx("status")}>
                 {!content.stock ? "sold out" : "new in"}
               </div>
             ) : (
               <></>
-            )}
+            )} */}
+            {/* <div className={cx("status")}>
+                {content.quantity ? "sold out" : "new in"}
+              </div> */}
           </div>
           <div className={cx("content")}>
             <div className={cx("content-title")}>{content.name}</div>
