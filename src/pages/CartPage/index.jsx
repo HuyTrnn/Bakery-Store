@@ -1,5 +1,5 @@
 import classNames from "classnames/bind";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { HiOutlineArrowNarrowLeft } from "react-icons/hi";
 import { Button } from "~/components";
 import styles from "./Cart.module.scss";
@@ -8,18 +8,20 @@ import NoCart from "./NoCart";
 import { Helmet } from "react-helmet-async";
 
 import { usePriceFormatter } from "~/hooks";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { fetchCart } from "~/store";
 
 const cx = classNames.bind(styles);
 
 function CartPage() {
-  const { items } = useSelector((state) => state.cart.data);
+  const [items, setItems] = useState([])
   const { data } = useSelector((state) => state.cart);
-
+  
+  const dispatch = useDispatch()
   const total = usePriceFormatter(data ? data.total : 0, "VND");
   const navigate = useNavigate();
-  const { status, isAuthenticated } = useSelector((state) => state.auth);
+  const { status, isAuthenticated, user } = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (status === "error" && !isAuthenticated) {
@@ -27,10 +29,17 @@ function CartPage() {
     }
   }, [isAuthenticated, status, navigate]);
 
-  console.log(items);
+  useEffect(() => {
+    if(user) {
+      dispatch(fetchCart(user._id)).then(data => {
+        setItems(data.payload.items)
+      })
+    }
+  }, [])
+
   let renderCart;
-  if (data.items) {
-    renderCart = data.items.map((item) => {
+  if (items) {
+    renderCart = items.map((item) => {
       return (
         <div className={cx("col", "l-12", "m-12", "c-12")} key={item.productId}>
           <ProductCartItem key={item.productId} product={item} />
@@ -39,10 +48,11 @@ function CartPage() {
     });
   } else {
   }
+
   return (
     <div className={cx("wrapper")}>
       <Helmet>
-        <title>Giỏ hàng của bạn – BAKES SAIGON</title>
+        <title>Giỏ hàng của bạn – Have good days</title>
       </Helmet>
 
       {items.length === 0 ? (

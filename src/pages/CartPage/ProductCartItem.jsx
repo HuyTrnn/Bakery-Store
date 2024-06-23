@@ -13,10 +13,10 @@ function ProductCartItem({ product }) {
   const [quantity, setQuantity] = useState(product.quantity);
   const dispatch = useDispatch();
   const total = usePriceFormatter(
-    quantity * product.price || 0 * product.price,
+    quantity * Number(product.product.price),
     "VND"
   );
-  const price = usePriceFormatter(product.price, "VND");
+  const price = usePriceFormatter(product.product.price, "VND");
   const handleChangeQuantity = (value) => {
     if (value > 0) {
       setQuantity(value);
@@ -46,7 +46,7 @@ function ProductCartItem({ product }) {
             <div
               className={cx("content-image")}
               style={{
-                backgroundImage: `url(data:image/png;base64,${product.productImage})`,
+                backgroundImage: `url(${product.product.images[0]})`,
               }}
             ></div>
             <div className={cx("content-wrapper")}>

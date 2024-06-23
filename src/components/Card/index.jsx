@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Button } from "..";
 import ModalPopUp from "./ModalPopUp";
+import axios from "axios";
 
 const cx = classNames.bind(styles);
 
@@ -55,20 +56,12 @@ function Card({ content }) {
       navigate("/login");
     } else {
       handleOpen();
-      dispatch(
-        addToCart({
-          userId: user.id,
-          product: {
-            productId: content.id,
-            productType: content.id_type,
-            productName: content.name,
-            productImage: content.image,
-            quantity: 1,
-            price: content.promotion_price || content.unit_price,
-            stock: content.stock,
-          },
-        })
-      );
+      const data = {
+        product_id: content._id,
+        amount: 1,
+        user_id: user._id
+      }
+      axios.post('https://backpack-nu.vercel.app/api/auth/carts', data)
     }
   };
   return (

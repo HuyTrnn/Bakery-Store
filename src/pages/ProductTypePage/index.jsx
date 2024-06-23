@@ -21,9 +21,8 @@ function ProductTypePage() {
   const [layoutActive, setLayoutActive] = useState(1);
   const [optionSelect, setOptionSelect] = useState(null);
   const { collectionId } = useParams();
-  const { data } = useSelector((state) => state.productsByCollection);
+  const { data } = useSelector((state) => state.productsByCollection.data);
   const dispatch = useDispatch();
-
   const [doFetchProducts, isLoading, error] = useThunk(
     fetchProductsByCollection
   );
@@ -37,7 +36,7 @@ function ProductTypePage() {
   } else if (error) {
     content = <h1>isError</h1>;
   } else if (data) {
-    content = data.map((product) => {
+    content = data && data.map((product) => {
       if (layoutActive === 0) {
         return (
           <div key={product.id} className={cx("col", "l-6", "l-6", "c-6")}>
