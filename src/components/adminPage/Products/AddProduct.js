@@ -40,7 +40,7 @@ function AddProduct() {
     if (isAuthenticated == false && status == "error") {
       navigateRouter("/login");
     }
-    if (user.level !== 1) {
+    if (user.account_level !== 1) {
       navigateRouter("/admin/err");
     }
   }, [isAuthenticated, user, accessToken]);
@@ -100,7 +100,7 @@ function AddProduct() {
     );
     const myJson = formDataToJson(formData);
     console.log(myJson);
-    fetch("http://localhost:81/api/products", {
+    fetch("https://backpack-nu.vercel.app/api/products", {
       method: "POST",
       headers: {
         Accept: "application/json",

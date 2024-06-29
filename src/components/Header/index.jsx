@@ -120,13 +120,13 @@ function Header() {
                     >
                       ABOUT
                     </Link>
-                    <Link
+                    {/* <Link
                       to="/fags"
                       className={cx("menu-item")}
                       onClick={handleClose}
                     >
                       fags
-                    </Link>
+                    </Link> */}
 
                     <button>vi</button>
                     <button>en</button>
@@ -136,7 +136,8 @@ function Header() {
             </div>
             <div className={cx("col", "l-6", "m-6", "c-8")}>
               <Button to="/" className={cx("nav-bar--logo")}>
-                <img alt="logo" src={logoSrc} />
+                {/* <img alt="logo" src={logoSrc} /> */}
+                <span style={{marginTop:"4px", fontSize: '24px', fontWeight: 'bold', color: 'var(---color-nav-text)'}}>Have good days</span>
               </Button>
             </div>
             <div className={cx("col", "l-6", "m-6", "c-2")}>
@@ -175,9 +176,9 @@ function Header() {
                       <Link to="/about" className={cx("menu-item")}>
                         ABOUT
                       </Link>
-                      <Link to="/fags" className={cx("menu-item")}>
+                      {/* <Link to="/fags" className={cx("menu-item")}>
                         fags
-                      </Link>
+                      </Link> */}
                     </div>
                   </div>
                   <div className={cx("col", "l-2", "m-2", "c-12")}>

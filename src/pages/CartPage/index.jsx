@@ -17,7 +17,7 @@ const cx = classNames.bind(styles);
 function CartPage() {
   const [items, setItems] = useState([])
   const { data } = useSelector((state) => state.cart);
-  
+
   const dispatch = useDispatch()
   const total = usePriceFormatter(data ? data.total : 0, "VND");
   const navigate = useNavigate();
@@ -96,7 +96,7 @@ function CartPage() {
             <div className={cx("row")}>
               <div className={cx("col", "l-6", "m-12", "c-12")}>
                 <div className={cx("cart-notes-wrapper")}>
-                  <h5>Note for Bakes (special instructions, writings, etc.)</h5>
+                  <h5>Note for Have good days (special instructions, writings, etc.)</h5>
                 </div>
               </div>
               <div className={cx("col", "l-6", "m-12", "c-12")}>

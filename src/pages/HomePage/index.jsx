@@ -2,6 +2,7 @@ import styles from "./HomePage.module.scss";
 import classNames from "classnames/bind";
 import { useSelector } from "react-redux";
 import { useThunk } from "~/hooks";
+import img from '../../assets/img1.jpg'
 import {
   fetchNewProducts,
   fetchSellingProducts,
@@ -35,7 +36,6 @@ function HomePage() {
   const { data: sellingProducts } = useSelector(
     (state) => state.sellingProducts
   );
-  console.log("test newProducts", newProducts);
   const { data: noNasties } = useSelector((state) => state.noNasties);
   const { data: branch } = useSelector((state) => state.branch);
   const { data: forte } = useSelector((state) => state.forte);
@@ -55,7 +55,7 @@ function HomePage() {
   ]);
 
   const banner = {
-    url: "https://cdn.shopify.com/s/files/1/2675/2320/files/Bakes_Grab_ad_1_1950x.jpg?v=1667143562",
+    url: img,
   };
 
   const BannerContent = (
@@ -255,7 +255,7 @@ function HomePage() {
           </div>
           <div className={cx("row")}>
             <div className={cx("col", "l-12", "c-12", "m-12")}>
-              <Slider quantityDisplayed={3} data={newProducts} />
+              <Slider quantityDisplayed={4} data={newProducts} />
             </div>
           </div>
         </div>
@@ -312,7 +312,7 @@ function HomePage() {
             </div>
           </div>
           <div className={cx("row")}>
-            <Slider quantityDisplayed={3} data={newProducts} />
+            <Slider quantityDisplayed={4} data={newProducts} />
           </div>
         </div>
       </div>

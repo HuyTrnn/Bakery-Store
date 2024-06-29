@@ -59,7 +59,7 @@ function ResetPasswordPage() {
   return (
     <div className={cx("wrapper")}>
       <Helmet>
-        <title>Account – BAKES SAIGON</title>
+        <title>Account – Have good days</title>
       </Helmet>
       <div className={cx("forgot-password")}>
         <h2 className={cx("forgot-password-heading")}>

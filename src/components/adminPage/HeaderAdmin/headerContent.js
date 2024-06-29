@@ -83,8 +83,6 @@ function HeaderContent(name) {
     };
   }, []);
 
-  console.log(results);
-
   return (
     <div className="admin-container">
       <header className="admin-header">

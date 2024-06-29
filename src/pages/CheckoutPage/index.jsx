@@ -20,7 +20,7 @@ function CheckoutPage() {
   const { data } = useSelector((state) => state.cart);
   const total = usePriceFormatter(data.total, "VND");
   const navigate = useNavigate();
-
+  const order = useSelector((state) => state.order.order);
   useEffect(() => {
     if (!isAuthenticated && status === "error") {
       navigate("/login");
@@ -47,9 +47,9 @@ function CheckoutPage() {
   };
 
   let renderProduct;
-  if (data) {
-    if (data.items) {
-      renderProduct = data.items.map((product) => {
+  if (order) {
+    if (order.items) {
+      renderProduct = order.items.map((product) => {
         return <ProductItem data={product} key={product.id} />;
       });
     }
@@ -81,7 +81,7 @@ function CheckoutPage() {
   return (
     <div className={cx("checkout-wrapper")}>
       <Helmet>
-        <title>Thanh Toán – BAKES SAIGON</title>
+        <title>Thanh Toán – Have good days</title>
       </Helmet>
 
       <div className={cx("grid", "wide")}>
@@ -89,7 +89,7 @@ function CheckoutPage() {
           <div className={cx("col", "l-6", "m-12", "c-12")}>
             <div className={cx("checkout--container")}>
               <div className={cx("name-store")}>
-                <h1>BAKES SAIGON</h1>
+                <h1> Have good days</h1>
               </div>
               <div className={cx("checkout-content")}>
                 <div className={cx("checkout-content--heading")}>

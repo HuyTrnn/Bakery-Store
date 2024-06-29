@@ -61,7 +61,7 @@ function LoginPage() {
   return (
     <div className={cx("wrapper")}>
       <Helmet>
-        <title>Tài khoản – BAKES SAIGON</title>
+        <title>Tài khoản – Have good days</title>
       </Helmet>
       <div className={cx("login")}>
         <h2 className={cx("login-heading")}>Login</h2>

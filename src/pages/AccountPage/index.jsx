@@ -48,7 +48,7 @@ function AccountPage() {
   return (
     <div className={cx("wrapper")}>
       <Helmet>
-        <title>Tài khoản – BAKES SAIGON</title>
+        <title>Tài khoản – Have good days</title>
       </Helmet>
       {isLoading ? (
         <LoadingComponent />
@@ -78,7 +78,7 @@ function AccountPage() {
               <div className={cx("col", "l-6", "m-6", "c-6")}>{renderInfo}</div>
               <div className={cx("col", "l-6", "m-6", "c-6")}>
                 <div className={cx("account-content")}>
-                  {user && user.level === 1 && (
+                  {user && user.account_level === 1 && (
                     <Button
                       primary
                       outline

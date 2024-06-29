@@ -66,7 +66,7 @@ function Card({ content }) {
   };
   return (
     <div className={cx("wrapper")}>
-      <Link to={`/collections/${content.id_type}/${content.id}`}>
+      <Link to={`/collections/${content.slug}/${content._id}`}>
         <div className={cx("container")}>
           <div className={cx("container-img")}>
             <img src={content.images[0]} alt="product" />

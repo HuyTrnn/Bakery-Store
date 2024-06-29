@@ -17,6 +17,7 @@ import {
   aboutKitchenReducer,
   slideBannerReducer,
   hiringReducer,
+  orderReducer,
 } from "./slices";
 
 const store = configureStore({
@@ -26,6 +27,7 @@ const store = configureStore({
     productsByCollection: productsByCollectionReducer,
     product: productReducer,
     cart: cartReducer,
+    order: orderReducer,
     newProducts: newProductsReducer,
     sellingProducts: sellingProductsReducer,
     fags: faqsReducer,

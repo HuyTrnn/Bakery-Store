@@ -13,6 +13,7 @@ export { default as faqsReducer } from "./fagsSlice";
 export { default as noNastiesReducer } from "./noNastiesSlice";
 export { default as branchReducer } from "./branchSlice";
 export { default as forteReducer } from "./forteSlice";
+export { default as orderReducer } from "./cartOrderSlice";
 
 export * from "./productsByCollection";
 

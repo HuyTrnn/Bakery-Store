@@ -3,10 +3,10 @@ import axios from "axios";
 
 const getProduct = createAsyncThunk("product/get", async (productId) => {
   const response = await axios.get(
-    `http://localhost:81/api/products/${productId}`
+    `https://backpack-nu.vercel.app/api/products/${productId}`
   );
-
-  return response.data.product;
+  console.log('test', response.data.data);
+  return response.data.data;
 });
 
 export { getProduct };

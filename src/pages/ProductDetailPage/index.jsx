@@ -29,9 +29,9 @@ function ProductDetailPage() {
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
 
-  const price = usePriceFormatter(product ? product.unit_price : 0, "VND");
+  const price = usePriceFormatter(product ? product.price : 0, "VND");
   const total = usePriceFormatter(
-    product ? product.unit_price * quantity : 0,
+    product ? product.price * quantity : 0,
     "VND"
   );
 
@@ -77,14 +77,14 @@ function ProductDetailPage() {
         handleOpen();
         dispatch(
           addToCart({
-            userId: user.id,
+            userId: user.user_id,
             product: {
-              productId: product.id,
+              productId: product._id,
               productType: product.id_type,
               productName: product.name,
-              productImage: product.image,
+              productImage: product.images[0],
               quantity,
-              price: product.promotion_price || product.unit_price,
+              price: product.promotion_price || product.price,
               stock: product.stock,
             },
           })
@@ -99,12 +99,11 @@ function ProductDetailPage() {
   } else if (error) {
     content = <h1>lỗi rồi</h1>;
   } else if (product) {
-    console.log(product);
     const contentAccordion = [
       {
         id: Math.random(),
         name: "description",
-        description: product.description,
+        description: product.description.detail,
       },
     ];
     content = (
@@ -154,7 +153,7 @@ function ProductDetailPage() {
   return (
     <div className={cx("wrapper")}>
       <Helmet>
-        <title>{product ? product.name : "sản phẩm"} – BAKES SAIGON</title>
+        <title>{product ? product.name : "sản phẩm"} – Have good days</title>
       </Helmet>
       <div>
         {isLoading ? (
@@ -167,9 +166,9 @@ function ProductDetailPage() {
                   <img
                     className={cx("product-image")}
                     src={
-                      product ? `data:image/png;base64,${product.image}` : ""
+                      product ? `${product.images[0]}` : ""
                     }
-                    alt="thọ ngu"
+                    alt="err"
                   />
                 </div>
               </div>

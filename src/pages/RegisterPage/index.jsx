@@ -62,7 +62,7 @@ function RegisterPage() {
   return (
     <div className={cx("wrapper")}>
       <Helmet>
-        <title>Đăng kí – BAKES SAIGON</title>
+        <title>Đăng kí – Have good days</title>
       </Helmet>
       <div className={cx("register")}>
         <h2 className={cx("register-heading")}>Sign up</h2>

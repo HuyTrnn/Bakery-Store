@@ -35,7 +35,7 @@ function EditProduct({ match }) {
     if (isAuthenticated == false && status == "error") {
       navigateRouter("/login");
     }
-    if (user.level !== 1) {
+    if (user.account_level !== 1) {
       navigateRouter("/admin/err");
     }
   }, [isAuthenticated, user, accessToken]);
@@ -45,11 +45,11 @@ function EditProduct({ match }) {
   };
   useEffect(() => {
     const fetchProducts = () => {
-      fetch(`http://localhost:81/api/products/${id}`, {})
+      fetch(`https://backpack-nu.vercel.app/api/products/${id}`, {})
         .then((res) => res.json())
         .then((data) => {
-          setProduct(data.product);
-          getOldData(data.product);
+          setProduct(data.data);
+          getOldData(data.data);
         })
         .then((data) => {
           fetch("http://localhost:81/api/products-type")
@@ -64,11 +64,11 @@ function EditProduct({ match }) {
 
   const getOldData = (data) => {
     setName(data.name);
-    setProductType(data.id_type);
-    setImages(data.image);
-    setDescription(data.description);
+    setProductType(data.type);
+    setImages(data.images[0]);
+    setDescription(data.description.detail);
     setStock(data.stock);
-    setPrice(data.unit_price);
+    setPrice(data.price);
     setProductTypeName(data.unit);
     setPromotion(data.promotion_price);
     setAlreadyInStock(data.new);
@@ -218,7 +218,7 @@ function EditProduct({ match }) {
                 />{" "}
                 <img
                   style={{ width: "100%", height: "100%" }}
-                  src={`data:image/png;base64,${images}`}
+                  src={`${images}`}
                   onChange={handleImageUpload}
                 />{" "}
               </div>{" "}

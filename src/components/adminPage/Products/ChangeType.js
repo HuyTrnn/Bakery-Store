@@ -43,7 +43,7 @@ function ChangeType({ match }) {
     if (isAuthenticated == false && status === "error") {
       navigateRouter("/login");
     }
-    if (user.level !== 1) {
+    if (user.account_level !== 1) {
       navigateRouter("/admin/err");
     }
   }, [isAuthenticated, user]);

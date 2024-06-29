@@ -10,7 +10,7 @@ const RouterGuard = ({ component: Component, ...rest }) => {
     <Route
       {...rest}
       render={(props) =>
-        isAuthenticated && user?.level === "1" ? (
+        isAuthenticated && user?.account_level === "1" ? (
           <Component {...props} />
         ) : (
           navigate("/login")

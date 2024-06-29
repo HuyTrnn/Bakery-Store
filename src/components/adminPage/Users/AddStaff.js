@@ -29,7 +29,7 @@ function AddStaff(data) {
     if (isAuthenticated == false && status == "error") {
       navigateRouter("/login");
     }
-    if (user.level !== 1) {
+    if (user.account_level !== 1) {
       navigateRouter("/admin/err");
     }
   }, [isAuthenticated, user, accessToken]);

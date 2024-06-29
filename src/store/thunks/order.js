@@ -3,7 +3,7 @@ import axios from "axios";
 
 const order = createAsyncThunk("order/post", async (data) => {
   const response = await axios.post(
-    "http://localhost:81/api/order-items",
+    "https://backpack-nu.vercel.app/api/auth/orders",
     data
   );
 

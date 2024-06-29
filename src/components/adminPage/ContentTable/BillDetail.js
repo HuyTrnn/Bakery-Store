@@ -34,7 +34,7 @@ function BillDetail({ order }) {
     if (isAuthenticated == false) {
       navigateRouter("/login");
     }
-    if (user.level !== 1) {
+    if (user.account_level !== 1) {
       navigateRouter("/admin/err");
     }
   }, [isAuthenticated, user, accessToken]);
@@ -42,35 +42,50 @@ function BillDetail({ order }) {
   const navigateRouter = (url) => {
     navigate(url);
   };
+  const fetchOrder = async () => {
+    const response = await fetch(`https://backpack-nu.vercel.app/api/auth/orders/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        accept: "application/json",
+        token_type: "bearer",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+    .then((res) => res.json())
+    .then((data) => {
+      setBill(data);
+    });
+    // setBill(json.bill);
+    // setCustomers(json.customer);
+    // setBillDetail(json.billDetail);
+    // setCustomerId(json.customer.id);
+    // if (json.bill.state === 3 || json.bill.state === 2) {
+    //   setCheck(true);
+    // }
+    // return json.billDetail;
+  };
 
   useEffect(() => {
-    const fetchOrder = async () => {
-      const response = await fetch(
-        `http://localhost:81/api/order-update/${id}`
-      );
-      const json = await response.json();
-      setBill(json.bill);
-      setCustomers(json.customer);
-      setBillDetail(json.billDetail);
-      setCustomerId(json.customer.id);
-      if (json.bill.state === 3 || json.bill.state === 2) {
-        setCheck(true);
-      }
-      return json.billDetail;
-    };
+    fetchOrder()
+  }, [])
+  console.log('test', bill);
 
-    fetchOrder().then((billDetailArr) => {
-      const promises = billDetailArr.map((billDetail) => {
-        return fetch(`http://localhost:81/api/products/${billDetail.id}`).then(
-          (res) => res.json()
-        );
-      });
-      Promise.all(promises).then((productsArr) => {
-        setProduct(productsArr);
-      });
-    });
-  }, [bill.state]);
-  console.log(bill);
+  
+
+  // useEffect(() => {
+
+  //   fetchOrder().then((billDetailArr) => {
+  //     const promises = billDetailArr.map((billDetail) => {
+  //       return fetch(`http://localhost:81/api/products/${billDetail.id}`).then(
+  //         (res) => res.json()
+  //       );
+  //     });
+  //     Promise.all(promises).then((productsArr) => {
+  //       setProduct(productsArr);
+  //     });
+  //   });
+  // }, [bill.state]);
 
   const handleChangeOrder = (state) => {
     fetch(`http://localhost:81/api/update-state-bill/${id}`, {

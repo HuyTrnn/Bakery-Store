@@ -15,7 +15,7 @@ export default function RouterAdmin() {
       element={
         <RouteGuard
           component={AdminPage}
-          isAuthorized={(user) => user.level == '1'}
+          isAuthorized={(user) => user.account_level == '1'}
           redirectTo="/login"
         />
       }

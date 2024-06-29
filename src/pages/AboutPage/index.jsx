@@ -17,13 +17,13 @@ const cx = classNames.bind(styles);
 
 function AboutPage() {
   const banner = {
-    url: "https://cdn.shopify.com/s/files/1/2675/2320/files/IMG_5256_3000x.jpg?v=1652873085",
+    url: "https://theme.hstatic.net/1000365849/1000614631/14/img_instagram1.jpg?v=272",
   };
 
   return (
     <div className={cx("wrapper")}>
       <Helmet>
-        <title>Về chúng tôi – HK SHOP</title>
+        <title>Về chúng tôi – Have good days Shop</title>
       </Helmet>
       <Banner image={banner} />
 
@@ -82,7 +82,7 @@ function AboutPage() {
                 <div
                   className={cx("theme--image")}
                   style={{
-                    backgroundImage: `url(${banner.url})`,
+                    backgroundImage: `url('https://theme.hstatic.net/1000365849/1000614631/14/img_instagram1.jpg?v=272)`,
                   }}
                 ></div>
               </div>

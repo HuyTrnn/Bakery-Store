@@ -22,20 +22,28 @@ function ContentTable() {
   );
 
   const navigate = useNavigate();
-
+  
+  const fecthOrder = () => {
+    fetch("https://backpack-nu.vercel.app/api/auth/orders", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        accept: "application/json",
+        token_type: "bearer",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setOrders(data.data);
+      });
+  };
   useEffect(() => {
-    const fecthOrder = () => {
-      fetch("http://localhost:81/api/order-list")
-        .then((res) => res.json())
-        .then((data) => {
-          setOrders(data.order);
-        });
-    };
-    changeState();
     fecthOrder();
   }, []);
+  // changeState();
 
-  console.log(isAuthenticated, user, accessToken);
+  console.log(orders);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -56,7 +64,7 @@ function ContentTable() {
       case 0:
         return "Đơn chưa hoàn tất";
       case 1:
-        return "Đang giao hàng";
+        return "Đã hoàn tất";
       case 2:
         return "Đã giao hàng";
       case 3:
@@ -66,7 +74,7 @@ function ContentTable() {
   };
 
   const filteredOrders = orders.filter((order) =>
-    order.customer_name.toString().includes(searchTerm)
+    order.user.name.toString().includes(searchTerm)
   );
 
   const sortOrder = filteredOrders.slice().reverse();
@@ -106,7 +114,7 @@ function ContentTable() {
               <tbody className="admin-table__info--data">
                 {" "}
                 {displayedOrder ? (
-                  displayedOrder.map((order) => (
+                  orders.map((order) => (
                     <tr style={{ textAlign: "center" }} key={order.id}>
                       <Link
                         className="admin-table__info--data---link"
@@ -115,10 +123,10 @@ function ContentTable() {
                       >
                         #{order.id.toString().padStart(4, "0")}{" "}
                       </Link>{" "}
-                      <td> {order.date_order} </td>{" "}
-                      <td> {order.customer_name} </td>{" "}
-                      <td> {order.payment} </td> <td> {order.total} </td>{" "}
-                      <td> {changeState(order.state)} </td>{" "}
+                      <td> {order.created_at} </td>{" "}
+                      <td> {order.recipient_name} </td>{" "}
+                      <td> {order.payment} </td> <td> {order.total_amount} </td>{" "}
+                      <td> {changeState(order.status)} </td>{" "}
                     </tr>
                   ))
                 ) : (
@@ -126,7 +134,7 @@ function ContentTable() {
                 )}{" "}
               </tbody>{" "}
             </table>{" "}
-            <TablePagination
+            {/* <TablePagination
               style={{ fontSize: "16px" }}
               component="div"
               count={orders.length}
@@ -134,7 +142,7 @@ function ContentTable() {
               onPageChange={handleChangePage}
               rowsPerPage={rowsPerPage}
               onRowsPerPageChange={handleChangeRowsPerPage}
-            />{" "}
+            />{" "} */}
           </div>{" "}
         </div>{" "}
       </div>{" "}

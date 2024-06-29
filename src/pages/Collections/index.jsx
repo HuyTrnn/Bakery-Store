@@ -59,7 +59,7 @@ function Collections() {
   return (
     <div className={cx("wrapper")}>
       <Helmet>
-        <title>Bộ sưu tập – BAKES SAIGON</title>
+        <title>Bộ sưu tập – Have good days</title>
       </Helmet>
 
       {isLoading ? (

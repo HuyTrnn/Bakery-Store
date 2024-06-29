@@ -8,7 +8,7 @@ function NotFoundPage() {
   return (
     <div className={cx("wrapper")}>
       <Helmet>
-        <title>Không tìm thấy trang – BAKES SAIGON</title>
+        <title>Không tìm thấy trang – Have good days</title>
       </Helmet>
       <h1>404 Page Not Found</h1>
       <p>We're sorry, but the page you requested could not be found.</p>

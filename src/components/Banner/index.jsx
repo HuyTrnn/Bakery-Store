@@ -75,6 +75,7 @@ function Banner({ image, content }) {
                   )}
                   <img
                     src={item}
+                    style={{minHeight: '700px'}}
                     alt=""
                     className="w-[800px] h-full lg:min-h-[700px] min-h-[525px] max-h-[720px]"
                   />

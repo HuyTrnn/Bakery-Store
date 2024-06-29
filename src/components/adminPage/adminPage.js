@@ -27,7 +27,7 @@ function AdminPage() {
     if (isAuthenticated == false && status == "error") {
       navigateRouter("/login");
     }
-    if (user.level !== 1) {
+    if (user && user.account_level !== 1) {
       navigateRouter("/admin/err");
     }
   }, [isAuthenticated, user, accessToken]);
@@ -36,7 +36,6 @@ function AdminPage() {
     navigate(url);
   };
 
-  console.log(isAuthenticated, user, accessToken);
   const [orders, setOrders] = useState([]);
   const [orderTotal, setOrderTotal] = useState(0);
   const [orderCod, setOrderCod] = useState(0);
@@ -48,10 +47,10 @@ function AdminPage() {
   const [saleMonth, setSaleMonth] = useState([]);
   const [renevueYear, setRenevueYear] = useState([]);
   const [renevuePreviousYear, setRenevuePreviousYear] = useState([]);
-
+  console.log('test', orders);
   useEffect(() => {
     const fecthOrder = () => {
-      fetch("http://localhost:81/api/order-list", {
+      fetch("https://backpack-nu.vercel.app/api/auth/orders", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -61,37 +60,37 @@ function AdminPage() {
         },
       })
         .then((res) => res.json())
-        .then((data) => {
-          setOrders(data.order);
-        })
-        .then(
-          fetch("http://localhost:81/api/sales-report", {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              accept: "application/json",
-              token_type: "bearer",
-              Authorization: `Bearer ${accessToken}`,
-            },
-          })
-            .then((res) => res.json())
-            .then((data) => {
-              setSaleMonth(data.sales_by_day_of_week);
-              setRenevueYear(data.sales_by_month_of_year);
-              setRenevuePreviousYear(data.sales_by_month_of_previous_year);
-            })
-        );
+        // .then((data) => {
+        //   setOrders(data);
+        // })
+        // .then(
+        //   fetch("http://localhost:81/api/sales-report", {
+        //     method: "GET",
+        //     headers: {
+        //       "Content-Type": "application/json",
+        //       accept: "application/json",
+        //       token_type: "bearer",
+        //       Authorization: `Bearer ${accessToken}`,
+        //     },
+        //   })
+        //     .then((res) => res.json())
+        //     .then((data) => {
+        //       setSaleMonth(data.sales_by_day_of_week);
+        //       setRenevueYear(data.sales_by_month_of_year);
+        //       setRenevuePreviousYear(data.sales_by_month_of_previous_year);
+        //     })
+        // );
     };
     fecthOrder();
   }, []);
 
-  useEffect(() => {});
+  // useEffect(() => {});
 
-  useEffect(() => {
-    if (orders.length > 0) {
-      getInfo(orders);
-    }
-  }, [orders]);
+  // useEffect(() => {
+  //   if (orders.length > 0) {
+  //     getInfo(orders);
+  //   }
+  // }, [orders]);
 
   function getInfo(data) {
     var totalOrder = 0;
@@ -99,24 +98,26 @@ function AdminPage() {
     var orderDone = 0;
     var orderCancel = 0;
 
-    data.forEach((order) => {
-      totalOrder = order.total + totalOrder;
-      if (order.payment == "COD") {
-        codOrder += 1;
-      }
-      if (order.state == 1 || order.state == 2) {
-        orderDone += 1;
-      } else if (order.state == 3) {
-        orderCancel += 1;
-      }
-    });
-    setOrderTotal(totalOrder);
-    setOrderCod(codOrder);
-    setOrderBank(orders.length - codOrder);
-    setDone(orderDone);
-    setOrderCancel(orderCancel);
+    if(orders){
+      data.forEach((order) => {
+        totalOrder = order.total + totalOrder;
+        if (order.payment == "COD") {
+          codOrder += 1;
+        }
+        if (order.state == 1 || order.state == 2) {
+          orderDone += 1;
+        } else if (order.state == 3) {
+          orderCancel += 1;
+        }
+      });
+      setOrderTotal(totalOrder);
+      setOrderCod(codOrder);
+      setOrderBank(orders.length - codOrder);
+      setDone(orderDone);
+      setOrderCancel(orderCancel);
+    }
   }
-  const codCount = orders.reduce((count, item) => {
+  const codCount = orders && orders.reduce((count, item) => {
     if (item.state == 1 || (item.state == 2 && item.payment === "COD")) {
       return count + 1;
     }
@@ -147,8 +148,7 @@ function AdminPage() {
     (total, sale) => total + sale.total_sales,
     0
   );
-  console.log(totalNow);
-  console.log(totalPrevious);
+
   return (
     <React.Fragment>
       <div className="admin-content">
@@ -160,15 +160,17 @@ function AdminPage() {
               <div className="admin-statistics__data--table">
                 <div className="admin-statistics__data--table---value">
                   Tổng số đơn:
-                  <span> {orders.length} </span>{" "}
+                  <span> {orders && orders.length} </span>{" "}
                 </div>{" "}
                 <div className="admin-statistics__data--table---value">
                   Tổng Thu:
                   <span> {orderTotal && orderTotal} </span>{" "}
                 </div>{" "}
-                <div className="admin-statistics__data--table---value">
+                {
+                  orders && <div className="admin-statistics__data--table---value">
                   Hình thức: COD {orderCod}, Banking {orders.length - orderCod}{" "}
-                </div>{" "}
+                </div>
+                }
               </div>{" "}
             </div>{" "}
             {/* <div className="admin-statistics__data">
@@ -225,7 +227,7 @@ function AdminPage() {
               <div className="admin-statistics__data--piechart">
                 <label> Số Lượng Đặt Hàng </label>{" "}
                 <div className="admin-statistics__data--label">
-                  <span> {orders.length} </span> Đơn hàng{" "}
+                  <span> {orders && orders.length} </span> Đơn hàng{" "}
                   <div> Đơn đã hoàn tất: {done} </div>{" "}
                   <div> Đơn đã hủy: {orderCancel} </div>{" "}
                 </div>{" "}
@@ -234,7 +236,7 @@ function AdminPage() {
                   {
                     <span>
                       {" "}
-                      {(
+                      {orders && (
                         (Number(orderCancel) / Number(orders.length)) *
                         100
                       ).toFixed(2)}{" "}

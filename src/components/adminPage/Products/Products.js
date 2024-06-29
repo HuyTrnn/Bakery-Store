@@ -31,7 +31,7 @@ function ProductsPage() {
     if (isAuthenticated == false && status == "error") {
       navigateRouter("/login");
     }
-    if (user.level !== 1) {
+    if (user.account_level !== 1) {
       navigateRouter("/admin/err");
     }
   }, [isAuthenticated, user, accessToken]);
@@ -41,10 +41,10 @@ function ProductsPage() {
   };
   useEffect(() => {
     const fetchProducts = () => {
-      fetch("http://localhost:81/api/products")
+      fetch("https://backpack-nu.vercel.app/api/products")
         .then((res) => res.json())
         .then((data) => {
-          setProducts(data.products);
+          setProducts(data);
           setLoading(false);
         });
     };
@@ -124,20 +124,23 @@ function ProductsPage() {
                   ) : (
                     displayedProducts.map((product, index) => (
                       <tr style={{ textAlign: "center" }} key={product.id}>
-                        <td> #{product.id.toString().padStart(3, "0")} </td>{" "}
+                        <td> #{product._id} </td>{" "}
                         <td style={{ width: "100px" }}>
                           <img
+                            alt="img"
                             className="img-product"
-                            src={`data:image/png;base64,${product.image}`}
+                            src={`${product.images[0]}`}
                           />{" "}
                         </td>{" "}
                         <td> {product.name} </td>{" "}
-                        <td> {product.unit_price} </td>{" "}
-                        <td> {product.stock} </td> <td> {product.unit} </td>{" "}
+                        <td> {product.price} </td>{" "}
+                        <td> {product.stock} </td> <td> {product.type} </td>{" "}
                         <td>
+                          <div style={{display: 'flex', justifyContent:'center', alignItems: 'center'}}>
                           <Link
+                            style={{marginRight: '6px'}}
                             onClick={() => handleEditProduct(product)}
-                            to={`/admin/editproduct/${product.id}`}
+                            to={`/admin/editproduct/${product._id}`}
                           >
                             <FiEdit />
                           </Link>{" "}
@@ -146,6 +149,7 @@ function ProductsPage() {
                               alertDelete(product.name, product.id)
                             }
                           />{" "}
+                          </div>
                         </td>{" "}
                       </tr>
                     ))

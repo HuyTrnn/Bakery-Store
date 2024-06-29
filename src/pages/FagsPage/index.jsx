@@ -32,7 +32,7 @@ function FagsPage() {
   return (
     <div className={cx("wrapper")}>
       <Helmet>
-        <title>Câu hỏi thường gặp – BAKES SAIGON</title>
+        <title>Câu hỏi thường gặp – Have good days</title>
       </Helmet>
       {isLoading ? (
         <LoadingComponent />

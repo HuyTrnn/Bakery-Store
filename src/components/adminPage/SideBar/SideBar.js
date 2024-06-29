@@ -21,7 +21,7 @@ function SideBar() {
             <Sidebar>
             <div className="l-4 m-3 c-8">
                 <Button to="/" className="nav-bar--logo admin-logo">
-                    <img alt="logo" src={logoSrc} />
+                    Trang mua hàng
                 </Button>
             </div>
             <Menu 
