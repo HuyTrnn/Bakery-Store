@@ -14,6 +14,8 @@ export { default as noNastiesReducer } from "./noNastiesSlice";
 export { default as branchReducer } from "./branchSlice";
 export { default as forteReducer } from "./forteSlice";
 export { default as orderReducer } from "./cartOrderSlice";
+export { default as languageReducer } from "./languageSlice";
+
 
 export * from "./productsByCollection";
 

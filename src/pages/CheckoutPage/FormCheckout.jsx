@@ -17,6 +17,7 @@ function FormCheckout({ paymentType, handleLoading }) {
   const [isOpen, setIsOpen] = useState(false);
   const { items, total } = useSelector((state) => state.cart.data);
   const { user } = useSelector((state) => state.auth);
+  const cartid = localStorage.getItem("cart_id")
 
   const handleOpen = () => {
     setIsOpen(true);
@@ -72,13 +73,14 @@ function FormCheckout({ paymentType, handleLoading }) {
     }),
     onSubmit: (values) => {
       doOrder({
+        cartid: JSON.parse(cartid),
         payment: paymentType === 0 ? "COD" : "ATM",
-        items,
-        total,
-        email: user.email,
-        phone_number: Number(values.phoneNumber),
-        address: values.address,
-        name: values.name,
+        // items,
+        // total,
+        // email: user.email,
+        recipient_phone: Number(values.phoneNumber),
+        shipping_address: values.address,
+        recipient_name: values.name,
         note: values.note,
       });
     },

@@ -9,6 +9,7 @@ import { useState } from "react";
 import { Button } from "..";
 import ModalPopUp from "./ModalPopUp";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 const cx = classNames.bind(styles);
 
@@ -17,7 +18,7 @@ function Card({ content }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-
+  const { t } = useTranslation()
   const handleOpen = () => {
     setIsOpen(true);
   };
@@ -33,7 +34,7 @@ function Card({ content }) {
         primary
         outline
       >
-        Tiếp tục mua hàng
+        {t('continue')}
       </Button>
       <Button
         className={cx("modal-action-btn")}
@@ -42,7 +43,7 @@ function Card({ content }) {
         primary
         outline
       >
-        Đi đến giỏ hàng
+        {t('checkout')}
       </Button>
     </div>
   );
@@ -95,7 +96,7 @@ function Card({ content }) {
       {isOpen && (
         <ModalPopUp actions={actionContent} onClose={handleClose}>
           <div className={cx("modal-heading")}>
-            Đã thêm sản phẩm vào giỏ hàng
+            {t("added")}
           </div>
         </ModalPopUp>
       )}
@@ -103,7 +104,7 @@ function Card({ content }) {
         <></>
       ) : (
         <button onClick={handleAddToCart} className={cx("btn-add")}>
-          Thêm vào giỏ hàng
+          {t("add-cart")}
         </button>
       )}
     </div>

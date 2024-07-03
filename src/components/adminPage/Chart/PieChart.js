@@ -24,7 +24,6 @@ function AdminPieChart(data) {
   ];
 
   const COLORS = ["#0088FE", "#00C49F", "#000"];
-console.log(data);
   return (
     <React.Fragment>
       <div className="Pie-Chart">

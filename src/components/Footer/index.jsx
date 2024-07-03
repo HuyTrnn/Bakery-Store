@@ -1,13 +1,16 @@
+import { useTranslation } from "react-i18next";
 import styles from "./Footer.module.scss";
 import classNames from "classnames/bind";
 
 const cx = classNames.bind(styles);
 
 function Footer() {
+  const { t } = useTranslation();
+
   const footerData = [
     {
       id: Math.random(),
-      heading: "GET IN TOUCH",
+      heading: t('contact'),
       content: [
         "Hotline: +84 902 77 42 44",
         "Mon - Fr, 09:00 - 18:00",
@@ -17,16 +20,16 @@ function Footer() {
     },
     {
       id: Math.random(),
-      heading: "ABOUT HAVEGOODDAYS",
+      heading: t('about-us'),
       content: [
-        "Havegooddays is a French patisserie that believes pastry should belike love: exciting, thoughtful, honest. The rest is just packaging.",
+        t('welcome')
       ],
     },
     {
       id: Math.random(),
-      heading: "ABOUT HAVEGOODDAYS",
+      heading: t('about-us'),
       content: [
-        "Love pastries? You're gonna love Havegooddays Club. Become a member to earn points, redeem points for free drinks & pastries, and receive special offers.",
+        t('seo')
       ],
     },
   ];

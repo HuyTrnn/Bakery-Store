@@ -7,7 +7,6 @@ const fetchProductsByCollection = createAsyncThunk(
     const response = await axios.get(
       `https://backpack-nu.vercel.app/api/type/${productTypeId}`
     );
-    console.log('productTypeId', productTypeId);
     return response.data;
   }
 );

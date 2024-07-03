@@ -11,14 +11,16 @@ import { useNavigate } from "react-router-dom";
 import { TbTruckDelivery } from "react-icons/tb";
 import { BiStoreAlt } from "react-icons/bi";
 import { ImRadioUnchecked, ImRadioChecked2 } from "react-icons/im";
+import { useTranslation } from "react-i18next";
 
 const cx = classNames.bind(styles);
 
 function CheckoutPage() {
   const [paymentType, setPaymentType] = useState(0);
   const { user, isAuthenticated, status } = useSelector((state) => state.auth);
-  const { data } = useSelector((state) => state.cart);
-  const total = usePriceFormatter(data.total, "VND");
+  const { data: cart } = useSelector((state) => state.cart);
+  const total = usePriceFormatter(cart.total, "VND");
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const order = useSelector((state) => state.order.order);
   useEffect(() => {
@@ -30,12 +32,12 @@ function CheckoutPage() {
   const paymentTypes = [
     {
       id: Math.random(),
-      name: "thanh toán khi nhận hàng",
+      name: t('cod'),
       value: 0,
     },
     {
       id: Math.random(),
-      name: "Chuyển khoảng",
+      name: t('banking'),
       value: 1,
     },
   ];
@@ -81,7 +83,7 @@ function CheckoutPage() {
   return (
     <div className={cx("checkout-wrapper")}>
       <Helmet>
-        <title>Thanh Toán – Have good days</title>
+        <title>{t("order-checkout")} – Have good days</title>
       </Helmet>
 
       <div className={cx("grid", "wide")}>
@@ -101,7 +103,7 @@ function CheckoutPage() {
               </div>
               <div className={cx("checkout-content")}>
                 <div className={cx("checkout-content--heading")}>
-                  <h4>Phương thức thanh toán</h4>
+                  <h4>{t("payment")}</h4>
                 </div>
                 <div className={cx("order-info")}>
                   <div>{renderPaymentTypes}</div>
@@ -109,7 +111,7 @@ function CheckoutPage() {
               </div>
               <div className={cx("checkout-content")}>
                 <div className={cx("checkout-content--heading")}>
-                  <h4>Thông tin nhận hàng</h4>
+                  <h4>{t("order-checkout")}</h4>
                 </div>
                 <div className={cx("order-info")}>
                   <FormCheckout paymentType={paymentType} />
@@ -120,12 +122,12 @@ function CheckoutPage() {
           <div className={cx("col", "l-6", "m-12", "c-12")}>
             <div className={cx("checkout--container")}>
               <div className={cx("checkout-container--heading")}>
-                <h2>Thông Tin Đơn hàng</h2>
+                <h2>{t("order-checkout")}</h2>
               </div>
               <div className={cx("list-order")}>{renderProduct}</div>
               <div className={cx("price")}>
-                <div className={cx("")}>Tổng cộng</div>
-                <div className={cx("")}>{data ? total : ""}</div>
+                <div className={cx("")}>{t("total")}</div>
+                <div className={cx("")}>{cart ? total : ""}</div>
               </div>
             </div>
           </div>

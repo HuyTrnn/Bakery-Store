@@ -18,6 +18,7 @@ import {
   slideBannerReducer,
   hiringReducer,
   orderReducer,
+  languageReducer,
 } from "./slices";
 
 const store = configureStore({
@@ -39,6 +40,7 @@ const store = configureStore({
     aboutKitchen: aboutKitchenReducer,
     slideBanner: slideBannerReducer,
     hiring: hiringReducer,
+    language: languageReducer,
   },
 });
 

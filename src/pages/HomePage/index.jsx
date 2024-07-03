@@ -13,11 +13,13 @@ import {
 import { Banner, Button, Slider, LoadingComponent } from "~/components";
 import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
+import { useTranslation } from "react-i18next";
 const cx = classNames.bind(styles);
 
 function HomePage() {
   const [doFetchNewProducts, isLoadingOfNewProducts, errorOfFetchNewProducts] =
     useThunk(fetchNewProducts);
+    const { t } = useTranslation();
 
   // const [
   //   doFetchSellingProducts,
@@ -284,7 +286,8 @@ function HomePage() {
                 <h4>Have good day</h4>
               </div>
               <div className={cx("address-content")}>
-                <p>235 Nguyễn Thị Định</p>
+                <p>{t('address1')}</p>
+                <p>{t('address2')}</p>
                 <p>8am - 10pm</p>
               </div>
             </div>
@@ -335,8 +338,8 @@ function HomePage() {
                   <h4>Have good day</h4>
                 </div>
                 <div className={cx("address-content")}>
-                  <p>235 Nguyễn Thị Định</p>
-                  <p>8am - 10pm</p>
+                  <p>{t('description1')}</p>
+                  <p>{t('description2')}</p>
                 </div>
               </div>
             </div>

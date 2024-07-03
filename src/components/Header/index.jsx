@@ -7,13 +7,17 @@ import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 
 import Tippy from "@tippyjs/react/headless";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import ModalSubMenu from "./ModalSubMenu";
 import TopBar from "./TopBar";
 import Button from "../Button";
 import { fetchCollections } from "~/store";
 import { useThunk } from "~/hooks";
+import { useTranslation } from "react-i18next";
+import { FaCircle, FaLanguage, FaStar } from "react-icons/fa";
+import { TfiViewList } from "react-icons/tfi";
+import { setLanguage } from "~/store/slices/languageSlice";
 
 const cx = classNames.bind(styles);
 
@@ -22,12 +26,13 @@ function Header() {
   const { data } = useSelector((state) => {
     return state.collections;
   });
+  const { t } = useTranslation();
   const [isPositionFixed, setIsPositionFixed] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-
+  const dispatch = useDispatch();
   const headerRef = useRef(null);
   const [doFetchCollections, isLoading, error] = useThunk(fetchCollections);
-
+  const lang = useSelector(state => state.language.lang);
   useEffect(() => {
     doFetchCollections();
   }, [doFetchCollections]);
@@ -89,6 +94,16 @@ function Header() {
     </div>
   );
 
+  const { i18n } = useTranslation()
+
+  const handleChangeLanguage = (language) => {
+    i18n.changeLanguage(language);
+  };
+
+  useEffect(() => {
+    handleChangeLanguage(lang)
+  }, [lang])
+
   return (
     <header className={cx("header")} ref={headerRef}>
       {!isPositionFixed ? <TopBar /> : <></>}
@@ -111,14 +126,14 @@ function Header() {
                       className={cx("menu-item")}
                       onClick={handleClose}
                     >
-                      ORDER NOW
+                      {t("order")}
                     </Link>
                     <Link
                       to="/about"
                       className={cx("menu-item")}
                       onClick={handleClose}
                     >
-                      ABOUT
+                      {t("about-us")}
                     </Link>
                     {/* <Link
                       to="/fags"
@@ -128,9 +143,9 @@ function Header() {
                       fags
                     </Link> */}
 
-                    <button>vi</button>
-                    <button>en</button>
+
                   </div>
+
                 </ModalSubMenu>
               )}
             </div>
@@ -170,11 +185,11 @@ function Header() {
                         )}
                       >
                         <Link to="/collections" className={cx("menu-item")}>
-                          ORDER NOW
+                          {t("order")}
                         </Link>
                       </Tippy>
                       <Link to="/about" className={cx("menu-item")}>
-                        ABOUT
+                        {t("about-us")}
                       </Link>
                       {/* <Link to="/fags" className={cx("menu-item")}>
                         fags
@@ -183,18 +198,28 @@ function Header() {
                   </div>
                   <div className={cx("col", "l-2", "m-2", "c-12")}>
                     <div className={cx("nav-bar-actions")}>
-                      <Link
-                        to={isLoggedIn ? "/account" : "/login"}
-                        className={cx("action-item", "action-login")}
-                      >
-                        <SlUser />
-                      </Link>
+                        <Link
+                          to={isLoggedIn ? "/account" : "/login"}
+                          className={cx("action-item", "action-login")}
+                        >
+                          <SlUser className="user-icon"/>
+                        </Link>
                       <Link
                         to={isLoggedIn ? "/cart" : "/login"}
                         className={cx("action-item", "action-cart")}
                       >
                         <BsCart3 />
                       </Link>
+                      <div className={cx("action-item", "action-cart")}>
+                        <div className={cx( "account-wrapper")} style={{display: "flex", alignItems:'center'}}>
+                          <FaLanguage />
+                          <ul className={cx("list-dropdown")}>
+                            <li onClick={() => dispatch(setLanguage('vi'))}><FaStar /> VI</li>
+                            <li onClick={() => dispatch(setLanguage('en'))}><TfiViewList /> EN</li>
+                            <li onClick={() => dispatch(setLanguage('ja'))}><FaCircle /> JA</li>
+                          </ul>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>

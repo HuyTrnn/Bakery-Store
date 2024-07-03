@@ -6,7 +6,6 @@ import styles from "./Accordion.module.scss";
 const cx = classNames.bind(styles);
 
 function Accordion({ items, heading }) {
-  console.log(items);
   const [appendedIndex, setAppendedIndex] = useState(0);
   const handleClick = (index) => {
     setAppendedIndex((current) => {

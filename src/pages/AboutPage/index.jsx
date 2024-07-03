@@ -12,6 +12,7 @@ import { useThunk } from "~/hooks";
 import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { Fragment } from "react";
+import { useTranslation } from "react-i18next";
 
 const cx = classNames.bind(styles);
 
@@ -19,11 +20,11 @@ function AboutPage() {
   const banner = {
     url: "https://theme.hstatic.net/1000365849/1000614631/14/img_instagram1.jpg?v=272",
   };
-
+  const { t } = useTranslation();
   return (
     <div className={cx("wrapper")}>
       <Helmet>
-        <title>Về chúng tôi – Have good days Shop</title>
+        <title>{t('about-us')} – Have good days Shop</title>
       </Helmet>
       <Banner image={banner} />
 
@@ -33,29 +34,19 @@ function AboutPage() {
             <div className={cx("row")}>
               <div className={cx("col", "l-12", "m-12", "c-12")}>
                 <div className={cx("heading", "heading--left")}>
-                  <h4>Về chúng tôi</h4>
+                  <h4>{t('about-us')}</h4>
                 </div>
               </div>
             </div>
             <div className={cx("row")}>
               <div className={cx("col", "l-6", "m-6", "c-12")}>
                 <div className={cx("our-story-content")}>
-                  Chắc hẳn chúng ta đều đã và đang gặp phải những rắc rối nhỏ
-                  nhặt trong cuộc sống hàng ngày từ việc túi áo quần bị quá tải
-                  bởi nhiều vật dụng cho tới việc chìa khóa, tai nghe, điện
-                  thoại bị thất lạc trong chính chiếc balo, túi xách mà chúng ta
-                  bỏ vào một cách lộn xộn. Nhưng rồi chúng ta dần cho đó là thói
-                  quen và sống chung với những vấn đề "nhỏ nhặt" này...
+                  {t('description')}
                 </div>
               </div>
               <div className={cx("col", "l-6", "m-6", "c-12")}>
                 <div className={cx("our-story-content")}>
-                  Với thông điệp "More than Simplicity", Camelia dành trọn tâm
-                  huyết để làm ra các sản phẩm của mình. Không chỉ là sự đơn
-                  giản ở thiết kế bên ngoài giúp cho người dùng đỡ mất thời gian
-                  suy nghĩ đến việc lựa chọn quần áo phù hợp, mà thiết kế bên
-                  trong của mỗi sản phẩm đều được chăm chút, tinh gọn nhằm tạo
-                  ra sự tiện lợi và ngăn nắp cho người sử dụng.
+                  {t('about.story-meaning')}
                 </div>
               </div>
             </div>
@@ -68,12 +59,11 @@ function AboutPage() {
             <div className={cx("col", "l-6", "m-6", "c-12")}>
               <div className={cx("theme-container")}>
                 <div className={cx("heading", "heading--left")}>
-                  <h4>Câu chuyện</h4>
+                  <h4>{t('about.story')}</h4>
                 </div>
                 <div className={cx("theme-content")}>
                   {" "}
-                  Với thông điệp "More than Simplicity", Camelia dành trọn tâm
-                  huyết để làm ra các sản phẩm của mình
+                  {t('about.story-meaning')}
                 </div>
               </div>
             </div>

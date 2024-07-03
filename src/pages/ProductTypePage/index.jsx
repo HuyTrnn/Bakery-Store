@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Helmet } from "react-helmet-async";
 
-import { Card, SelectBox } from "~/components";
+import { Card, LoadingComponent, SelectBox } from "~/components";
 import { fetchProductsByCollection, sorted } from "~/store";
 import { useThunk } from "~/hooks";
 
@@ -27,14 +27,13 @@ function ProductTypePage() {
     fetchProductsByCollection
   );
 
-  console.log('test ', data);
   useEffect(() => {
     doFetchProducts(collectionId);
   }, [collectionId, doFetchProducts]);
 
   let content;
   if (isLoading) {
-    content = <h1>isLoading</h1>;
+    content = <LoadingComponent />;
   } else if (error) {
     content = <h1>isError</h1>;
   } else if (data) {

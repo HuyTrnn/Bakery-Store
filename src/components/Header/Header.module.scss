@@ -1,6 +1,51 @@
 .header {
   width: 100%;
   max-height: var(---header-height);
+  .account-wrapper {
+    position: relative;
+    &:hover {
+      .list-dropdown {
+        display: flex;
+      }
+    }
+  }
+  .list-dropdown {
+    position: absolute;
+    display: none;
+    z-index: 1000;
+    background-color: var(---color-footer-bg);
+    width: 300px;
+    left: -136px;
+    top: 26px;
+    border-radius: 6px;
+    padding: 12px;
+    justify-content: space-around;
+    &::after {
+      content: "";
+      height: 20px;
+      top: -13px;
+      width: 62px;
+      position: absolute;
+      &:hover {
+        .list-dropdown {
+          display: flex;
+        }
+      }
+    }
+    &:hover {
+        display: flex;
+    }
+    & > li {
+      display: flex;
+      gap: 4px;
+      cursor: pointer;
+      align-items: center;
+      font-size: 16px;
+      &:hover {
+        color: var(---color-primary);
+      }
+    }
+  }
 }
 
 .top-bar {
@@ -115,9 +160,9 @@
     .action-item {
       font-size: 1.8rem;
       margin-right: 16px;
-      &:hover {
-        opacity: 0.8;
-      }
+      // &:hover {
+      //   opacity: 0.8;
+      // }
     }
   }
 }

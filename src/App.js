@@ -6,6 +6,8 @@ import { useThunk } from "./hooks";
 import { getUser, setCart } from "./store";
 import { useSelector } from "react-redux";
 import { HelmetProvider } from "react-helmet-async";
+import { setLanguage } from "./store/slices/languageSlice";
+
 
 function App() {
   const [doGetUser, isLoading, error, data] = useThunk(getUser);
@@ -21,10 +23,10 @@ function App() {
     if (isLoading) {
     } else if (error) {
     } else if (data) {
-      const cartJson = localStorage.getItem(`cart_${data.id}`);
-      let cart = JSON.parse(cartJson);
-      if (cart) {
-        dispatch(setCart(cart));
+      const cartJson = localStorage.getItem(`language`);
+      // let lang = JSON.parse(cartJson);
+      if (cartJson) {
+        dispatch(setLanguage(cartJson));
       }
     }
   }, [isLoading, error, data, dispatch]);

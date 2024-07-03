@@ -16,6 +16,7 @@ import {
 import { usePriceFormatter, useThunk } from "~/hooks";
 
 import ModalPopUp from "./ModalPopUp";
+import { useTranslation } from "react-i18next";
 const cx = classNames.bind(styles);
 
 function ProductDetailPage() {
@@ -25,6 +26,8 @@ function ProductDetailPage() {
   const [doGetProduct, isLoading, error, data] = useThunk(getProduct);
   const { data: product } = useSelector((state) => state.product);
   const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const lang = useSelector(state => state.language.lang);
+  const { t } = useTranslation();
 
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
@@ -37,7 +40,7 @@ function ProductDetailPage() {
 
   useEffect(() => {
     doGetProduct(productId);
-  }, [productId, doGetProduct]);
+  }, [productId, doGetProduct, lang]);
   const handleChangeQuantity = (value) => {
     setQuantity(value);
   };
@@ -56,7 +59,7 @@ function ProductDetailPage() {
         primary
         outline
       >
-        Tiếp tục mua hàng
+        {t('continue')}
       </Button>
       <Button
         className={cx("modal-action-btn")}
@@ -65,7 +68,7 @@ function ProductDetailPage() {
         primary
         outline
       >
-        Đi đến giỏ hàng
+        {t('checkout')}
       </Button>
     </div>
   );
@@ -102,7 +105,7 @@ function ProductDetailPage() {
     const contentAccordion = [
       {
         id: Math.random(),
-        name: "description",
+        name: t('detail'),
         description: product.description.detail,
       },
     ];
@@ -119,7 +122,7 @@ function ProductDetailPage() {
               quantity={quantity}
               onChange={handleChangeQuantity}
             />
-            <div>{product.stock} sản phẩm có sẵn</div>
+            <div>{product.stock} {t('stock')}</div>
           </div>
 
           <button
@@ -129,7 +132,7 @@ function ProductDetailPage() {
               "btn--sold-out": !product.stock,
             })}
           >
-            {product.stock ? "ADD TO CART" : "Sold out"}
+            {product.stock ? t("add-cart") : "Sold out"}
             <span>•</span>
             {total}
           </button>
@@ -138,13 +141,13 @@ function ProductDetailPage() {
         {isOpen && (
           <ModalPopUp actions={actionContent} onClose={handleClose}>
             <div className={cx("modal-heading")}>
-              Đã thêm sản phẩm vào giỏ hàng
+              {t("added")}
             </div>
           </ModalPopUp>
         )}
         <Accordion items={contentAccordion} />
         <div className={cx("product-note")}>
-          VAT will be added at check out.
+          {t('VAT')}
         </div>
       </div>
     );
