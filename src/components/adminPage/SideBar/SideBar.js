@@ -51,7 +51,7 @@ function SideBar() {
                     </SubMenu>
                 </SubMenu>
                 <SubMenu icon={<HiGlobeAlt/>} component={<Link  />} label="Website"> 
-                    <MenuItem component={<Link to="/designwebsite/slide"/>}>Slide</MenuItem>
+                    <MenuItem component={<Link to="/designwebsite/slide"/>}>Việc làm</MenuItem>
                 </SubMenu>
                 <MenuItem icon={<BsCurrencyDollar/>} component={<Link to="/admin/renevue"  />}>Doanh thu</MenuItem>
             </Menu>

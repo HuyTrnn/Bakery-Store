@@ -17,6 +17,7 @@ function AddProduct() {
   const [promotion, setPromotion] = useState();
   const [stock, setStock] = useState();
   const [price, setPrice] = useState();
+  const lang = useSelector(state => state.language.lang);
   const [alreadyInStock, setAlreadyInStock] = useState(1);
   const { status, isAuthenticated, user, accessToken } = useSelector(
     (state) => state.auth
@@ -40,7 +41,7 @@ function AddProduct() {
     if (isAuthenticated == false && status == "error") {
       navigateRouter("/login");
     }
-    if (user.account_level !== 1) {
+    if (user && user.account_level !== 1) {
       navigateRouter("/admin/err");
     }
   }, [isAuthenticated, user, accessToken]);
@@ -71,36 +72,17 @@ function AddProduct() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData();
-    formData.append("name", name);
-    formData.append("id_type", productType);
-    formData.append("unit_price", price);
+    formData.append(`name[${lang}]`, name);
+    formData.append("type", productType);
+    formData.append("price", price);
     formData.append("unit", productTypeName);
     formData.append("stock", stock);
     formData.append("image", images);
-    formData.append("promotion_price", promotion);
-    formData.append("new", alreadyInStock);
-    formData.append("description", description);
-    console.log(
-      "name: ",
-      name,
-      "id_type:",
-      productType,
-      "unit_price:",
-      price,
-      "stock:",
-      stock,
-      "promotion_price:",
-      promotion,
-      "new:",
-      alreadyInStock,
-      "description:",
-      description,
-      "image:",
-      images
-    );
+    formData.append("promotion_price", 0);
+    formData.append("new", 1);
+    formData.append(`description[${lang}][detail]`, description);
     const myJson = formDataToJson(formData);
-    console.log(myJson);
-    fetch("https://backpack-nu.vercel.app/api/products", {
+    fetch("https://backpack-nu.vercel.app/api/auth/products", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -118,7 +100,7 @@ function AddProduct() {
         alert("Có lỗi xảy ra vui lòng cập nhật đủ các trường:", error);
       });
     alert("đã thêm thành công");
-    navigate("/admin/products");
+    // navigate("/admin/products");
   };
 
   return (

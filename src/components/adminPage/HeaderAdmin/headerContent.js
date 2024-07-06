@@ -2,10 +2,13 @@ import { useState, useRef, useEffect } from "react";
 import { BiSearchAlt } from "react-icons/bi";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import "./headerContent.scss";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "~/store";
 import { useThunk } from "~/hooks";
+import { FaCircle, FaLanguage, FaStar } from "react-icons/fa";
+import { TfiViewList } from "react-icons/tfi";
+import { setLanguage } from "~/store/slices/languageSlice";
 
 function HeaderContent(name) {
   const [title, setTitle] = useState(name);
@@ -82,7 +85,7 @@ function HeaderContent(name) {
       document.removeEventListener("click", handleClickOutside, true);
     };
   }, []);
-
+  const dispatch = useDispatch()
   return (
     <div className="admin-container">
       <header className="admin-header">
@@ -127,6 +130,16 @@ function HeaderContent(name) {
           )}{" "}
         </div>{" "}
         <div className="admin-profile">
+        <div className={("action-item", "action-cart")}>
+                        <div className={( "account-wrapper")} style={{display: "flex", alignItems:'center'}}>
+                          <FaLanguage />
+                          <ul className={("list-dropdown")}>
+                            <li onClick={() => dispatch(setLanguage('vi'))}><FaStar /> VI</li>
+                            <li onClick={() => dispatch(setLanguage('en'))}><TfiViewList /> EN</li>
+                            <li onClick={() => dispatch(setLanguage('ja'))}><FaCircle /> JA</li>
+                          </ul>
+                        </div>
+                      </div>
           <div className="admin-profile__user" onClick={handleInfoClick}>
             <span style={{ cursor: "pointer" }}>
               {" "}

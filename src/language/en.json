@@ -4,5 +4,30 @@
     "about" : {
         "story-meaning": "With the message More than Simplicity, Camelia devotes all its heart to making its products. Not only is the simplicity of the exterior design helping users save time thinking about choosing suitable clothes, and the internal design of each product is carefully and streamlined to create convenience and order for the user.",
         "story": "Story"
-    }
+    },
+    "add-cart": "Add to cart",
+    "order": "Order",
+    "login": "Login",
+    "forgotPassword": "Forgot password",
+    "sign-in": "Sign up",
+    "address1": "235 Nguyen Thi Dinh, Binh Thanh District, Ho Chi Minh City",
+    "address2": "71 Tran Quang Dieu, District 3, Ho Chi Minh City",
+    "description1": "From the very special favors you have given Camelia in recent times when many customers have owned many products, supported and loved Camelia Brand. We truly appreciate that.",
+    "description2": "The customer loyalty program was born, with the goal of improving customer experience and giving more gratitude to customers who have been with Camelia Brand since the first days.",
+    "contact": "Contact",
+    "welcome": "Have good days puts heart and soul into each product, bringing people simplicity from the smallest things",
+    "seo": "You'll love the Havegooddays Club. Become a member to earn points, redeem them for free drinks and pastries, and receive special offers.",
+    "stock": "product available",
+    "continue": "Continue shopping",
+    "checkout": "Go to cart",
+    "VAT": "VAT will be added at confirmation of purchase.",
+    "added": "Product added to cart",
+    "price": "Price",
+    "quantity": "Quantity",
+    "total": "Total",
+    "order-checkout": "Order Information",
+    "payment": "Payment method",
+    "cod": "Pay upon delivery",
+    "banking": "Transfer",
+    "confirm": "Confirm"
 }

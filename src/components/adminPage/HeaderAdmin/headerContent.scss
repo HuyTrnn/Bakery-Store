@@ -10,6 +10,76 @@
     background-color: var(---color-footer-bg);
 }
 
+.nav-bar--menu {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    color: var(---color-nav-text);
+    .menu-item {
+      display: flex;
+      text-transform: uppercase;
+      font-weight: 500;
+      margin-left: 12px;
+      margin-right: 4px;
+      position: relative;
+      padding: 8px 0;
+
+      &::before {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        width: 0;
+        transition: width 0.2s linear;
+      }
+      &:hover {
+        opacity: 0.8;
+      }
+      &:hover:before {
+        width: 100%;
+        border: 1px solid var(---inverse-primary);
+      }
+    }
+
+    .sub-nav {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      background-color: #fff;
+      border-radius: 4px;
+      padding: 16px 8px;
+      justify-content: center;
+      box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    }
+
+    .sub-nav-item {
+      width: 100%;
+      display: block;
+      font-size: 1.2rem;
+      text-align: left;
+      justify-content: flex-start;
+      margin: 8px;
+      color: var(---inverse-primary);
+      font-weight: 400;
+      text-transform: uppercase;
+    }
+  }
+
+  .nav-bar-actions {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    justify-content: space-between;
+    .action-item {
+      font-size: 1.8rem;
+      margin-right: 16px;
+      // &:hover {
+      //   opacity: 0.8;
+      // }
+    }
+  }
+
 .admin-container {
     padding: 0 12px;
    

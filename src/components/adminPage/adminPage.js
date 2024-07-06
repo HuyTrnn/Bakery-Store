@@ -47,7 +47,6 @@ function AdminPage() {
   const [saleMonth, setSaleMonth] = useState([]);
   const [renevueYear, setRenevueYear] = useState([]);
   const [renevuePreviousYear, setRenevuePreviousYear] = useState([]);
-  console.log('test', orders);
   useEffect(() => {
     const fecthOrder = () => {
       fetch("https://backpack-nu.vercel.app/api/auth/orders", {

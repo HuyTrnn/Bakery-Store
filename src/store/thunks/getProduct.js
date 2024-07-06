@@ -6,11 +6,11 @@ const getProduct = createAsyncThunk(
   async (productId, { getState }) => {
     // Access the lang state from Redux
     const { lang } = getState();
-    
+    const language = localStorage.getItem("language");
     // Configure the request headers
     const config = {
       headers: {
-        "Accept-Language": lang || 'vi', // Set the Accept-Language header
+        "Accept-Language": JSON.parse(language) || 'vi', // Set the Accept-Language header
       },
     };
 

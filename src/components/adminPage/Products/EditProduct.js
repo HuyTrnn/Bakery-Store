@@ -21,7 +21,7 @@ function EditProduct({ match }) {
   const [alreadyInStock, setAlreadyInStock] = useState();
   const navigate = useNavigate();
   const { id } = useParams();
-
+  const lang = useSelector(state => state.language.lang);
   const { status, isAuthenticated, user, accessToken } = useSelector(
     (state) => state.auth
   );
@@ -35,7 +35,7 @@ function EditProduct({ match }) {
     if (isAuthenticated == false && status == "error") {
       navigateRouter("/login");
     }
-    if (user.account_level !== 1) {
+    if (user && user.account_level !== 1) {
       navigateRouter("/admin/err");
     }
   }, [isAuthenticated, user, accessToken]);
@@ -100,15 +100,15 @@ function EditProduct({ match }) {
     event.preventDefault();
 
     const formData = new FormData();
-    formData.append("name", name);
-    formData.append("id_type", productType);
-    formData.append("unit_price", price);
+    formData.append(`name[${lang}]`, name);
+    formData.append("type", productType);
+    formData.append("price", price);
     formData.append("unit", productTypeName);
     formData.append("stock", stock);
     formData.append("image", images);
     formData.append("promotion_price", 0);
     formData.append("new", 1);
-    formData.append("description", description);
+    formData.append(`description[${lang}][detail]`, description);
     const myJson = formDataToJson(formData);
     console.log(
       "name :",
@@ -128,7 +128,7 @@ function EditProduct({ match }) {
       description,
       productType
     );
-    fetch(`http://localhost:81/api/products/${id}`, {
+    fetch(`https://backpack-nu.vercel.app/api/auth/products/${id}`, {
       method: "PUT",
       headers: {
         Accept: "application/json",

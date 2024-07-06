@@ -25,6 +25,7 @@ function ProductDetailPage() {
   const [quantity, setQuantity] = useState(1);
   const [doGetProduct, isLoading, error, data] = useThunk(getProduct);
   const { data: product } = useSelector((state) => state.product);
+  const [transalateData, setTransalateData] = useState(product);
   const { isAuthenticated, user } = useSelector((state) => state.auth);
   const lang = useSelector(state => state.language.lang);
   const { t } = useTranslation();
@@ -40,6 +41,7 @@ function ProductDetailPage() {
 
   useEffect(() => {
     doGetProduct(productId);
+    console.log('test', lang);
   }, [productId, doGetProduct, lang]);
   const handleChangeQuantity = (value) => {
     setQuantity(value);

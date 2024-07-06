@@ -34,7 +34,7 @@ function BillDetail({ order }) {
     if (isAuthenticated == false) {
       navigateRouter("/login");
     }
-    if (user.account_level !== 1) {
+    if (user && user.account_level !== 1) {
       navigateRouter("/admin/err");
     }
   }, [isAuthenticated, user, accessToken]);
@@ -69,7 +69,6 @@ function BillDetail({ order }) {
   useEffect(() => {
     fetchOrder()
   }, [])
-  console.log('test', bill);
 
   
 

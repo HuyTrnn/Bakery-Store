@@ -31,7 +31,7 @@ function ProductsPage() {
     if (isAuthenticated == false && status == "error") {
       navigateRouter("/login");
     }
-    if (user.account_level !== 1) {
+    if (user && user.account_level !== 1) {
       navigateRouter("/admin/err");
     }
   }, [isAuthenticated, user, accessToken]);

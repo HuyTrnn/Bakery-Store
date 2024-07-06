@@ -43,7 +43,6 @@ function ContentTable() {
   }, []);
   // changeState();
 
-  console.log(orders);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
