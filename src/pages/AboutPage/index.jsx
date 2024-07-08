@@ -9,7 +9,7 @@ import {
   fetchHiring,
 } from "~/store";
 import { useThunk } from "~/hooks";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
@@ -20,7 +20,49 @@ function AboutPage() {
   const banner = {
     url: "https://theme.hstatic.net/1000365849/1000614631/14/img_instagram1.jpg?v=272",
   };
+
+  const hiringBanner = {
+    url: "https://static.vecteezy.com/system/resources/thumbnails/022/025/818/small_2x/we-are-hiring-banner-png.png"
+  }
   const { t } = useTranslation();
+  const lang = useSelector(state => state.language.lang);
+  const [hiring, setHiring] = useState([])
+  const fecthJob = () => {
+    fetch("https://backpack-nu.vercel.app/api/active_careers", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        accept: "application/json",
+        token_type: "bearer",
+        "Accept-Language": lang || 'vi'
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setHiring(data);
+      })
+      // .then(
+      //   fetch("http://localhost:81/api/sales-report", {
+      //     method: "GET",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //       accept: "application/json",
+      //       token_type: "bearer",
+      //       Authorization: `Bearer ${accessToken}`,
+      //     },
+      //   })
+      //     .then((res) => res.json())
+      //     .then((data) => {
+      //       setSaleMonth(data.sales_by_day_of_week);
+      //       setRenevueYear(data.sales_by_month_of_year);
+      //       setRenevuePreviousYear(data.sales_by_month_of_previous_year);
+      //     })
+      // );
+  };
+  useEffect(() => {
+    fecthJob();
+  }, [lang]);
+  console.log('test', hiring);
   return (
     <div className={cx("wrapper")}>
       <Helmet>
@@ -92,78 +134,33 @@ function AboutPage() {
           </div>
           <div className={cx("row")}>
             {" "}
-            <div className={cx("col", "l-4", "m-4", "c-12")}>
-              <div className={cx("cart--container")}>
-                <div className={cx("cart--image")}>
-                  <div
-                    className={cx("lazy--image")}
-                    style={{
-                      backgroundImage: `url(${banner.url})`,
-                    }}
-                  ></div>
-                </div>
-                <div className={cx("cart--content")}>
-                  <div className={cx("cart--heading")}>
-                    <h5>Bếp trưởng</h5>
+            {hiring.map((item,index ) => (
+              <div key={index} className={cx("col", "l-4", "m-4", "c-12")}>
+                <div className={cx("cart--container")}>
+                  <div className={cx("cart--image")}>
+                    <div
+                      className={cx("lazy--image")}
+                      style={{
+                        backgroundImage: `url(${hiringBanner.url})`,
+                      }}
+                    ></div>
                   </div>
-                  <div className={cx("cart--description")}>
-                    <p>
-                      {" "}
-                      Với thông điệp "More than Simplicity", Camelia dành trọn
-                      tâm huyết để làm ra các sản phẩm của mình
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className={cx("col", "l-4", "m-4", "c-12")}>
-              <div className={cx("cart--container")}>
-                <div className={cx("cart--image")}>
-                  <div
-                    className={cx("lazy--image")}
-                    style={{
-                      backgroundImage: `url(${banner.url})`,
-                    }}
-                  ></div>
-                </div>
-                <div className={cx("cart--content")}>
-                  <div className={cx("cart--heading")}>
-                    <h5>Bếp trưởng</h5>
-                  </div>
-                  <div className={cx("cart--description")}>
-                    <p>
-                      {" "}
-                      Với thông điệp "More than Simplicity", Camelia dành trọn
-                      tâm huyết để làm ra các sản phẩm của mình
-                    </p>
+                  <div className={cx("cart--content")}>
+                    <div className={cx("cart--heading")}>
+                      <h5>{item.title}</h5>
+                    </div>
+                    <div className={cx("cart--description")}>
+                      <p>
+                        {item.description}
+                      </p>
+                      <span>{item.requirements}</span>
+                      {/* <span>{item.location}</span> */}
+                      <div>{t('salary')}: {item.salary}</div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div className={cx("col", "l-4", "m-4", "c-12")}>
-              <div className={cx("cart--container")}>
-                <div className={cx("cart--image")}>
-                  <div
-                    className={cx("lazy--image")}
-                    style={{
-                      backgroundImage: `url(${banner.url})`,
-                    }}
-                  ></div>
-                </div>
-                <div className={cx("cart--content")}>
-                  <div className={cx("cart--heading")}>
-                    <h5>Bếp trưởng</h5>
-                  </div>
-                  <div className={cx("cart--description")}>
-                    <p>
-                      {" "}
-                      Với thông điệp "More than Simplicity", Camelia dành trọn
-                      tâm huyết để làm ra các sản phẩm của mình
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>

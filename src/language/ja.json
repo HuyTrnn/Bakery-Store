@@ -31,5 +31,6 @@
     "payment": "支払い方法",
     "cod": "配達時に支払います",
     "banking": "送金",
-    "confirm": "確認"
+    "confirm": "確認",
+    "salary": "給与"
 }

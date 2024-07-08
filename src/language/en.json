@@ -29,5 +29,6 @@
     "payment": "Payment method",
     "cod": "Pay upon delivery",
     "banking": "Transfer",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "salary": "Salary"
 }
