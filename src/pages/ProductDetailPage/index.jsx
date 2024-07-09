@@ -17,6 +17,7 @@ import { usePriceFormatter, useThunk } from "~/hooks";
 
 import ModalPopUp from "./ModalPopUp";
 import { useTranslation } from "react-i18next";
+import { Select } from "antd";
 const cx = classNames.bind(styles);
 
 function ProductDetailPage() {

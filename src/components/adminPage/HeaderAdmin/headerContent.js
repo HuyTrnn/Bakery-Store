@@ -9,6 +9,7 @@ import { useThunk } from "~/hooks";
 import { FaCircle, FaLanguage, FaStar } from "react-icons/fa";
 import { TfiViewList } from "react-icons/tfi";
 import { setLanguage } from "~/store/slices/languageSlice";
+import ChangeLangueButton from "~/components/Button/ChangeLangueButton";
 
 function HeaderContent(name) {
   const [title, setTitle] = useState(name);
@@ -85,7 +86,7 @@ function HeaderContent(name) {
       document.removeEventListener("click", handleClickOutside, true);
     };
   }, []);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   return (
     <div className="admin-container">
       <header className="admin-header">
@@ -130,20 +131,11 @@ function HeaderContent(name) {
           )}{" "}
         </div>{" "}
         <div className="admin-profile">
-        <div className={("action-item", "action-cart")}>
-                        <div className={( "account-wrapper")} style={{display: "flex", alignItems:'center'}}>
-                          <FaLanguage />
-                          <ul className={("list-dropdown")}>
-                            <li onClick={() => dispatch(setLanguage('vi'))}><FaStar /> VI</li>
-                            <li onClick={() => dispatch(setLanguage('en'))}><TfiViewList /> EN</li>
-                            <li onClick={() => dispatch(setLanguage('ja'))}><FaCircle /> JA</li>
-                          </ul>
-                        </div>
-                      </div>
-          <div className="admin-profile__user" onClick={handleInfoClick}>
+          <ChangeLangueButton />
+          <div style={{marginLeft: '24px'}} className="admin-profile__user" onClick={handleInfoClick}>
             <span style={{ cursor: "pointer" }}>
               {" "}
-              {user && user.name} <IoMdNotificationsOutline />{" "}
+              {user && user.name}{" "}
             </span>{" "}
             <div
               className="user-info"

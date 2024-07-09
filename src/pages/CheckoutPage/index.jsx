@@ -7,7 +7,7 @@ import ProductItem from "./ProductItem";
 import { usePriceFormatter } from "~/hooks";
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
-import Qrcode from '../../assets/QRCode.jpeg'
+import Qrcode from "../../assets/QRCode.jpeg";
 import { TbTruckDelivery } from "react-icons/tb";
 import { BiStoreAlt } from "react-icons/bi";
 import { ImRadioUnchecked, ImRadioChecked2 } from "react-icons/im";
@@ -32,12 +32,12 @@ function CheckoutPage() {
   const paymentTypes = [
     {
       id: Math.random(),
-      name: t('cod'),
+      name: t("cod"),
       value: 0,
     },
     {
       id: Math.random(),
-      name: t('banking'),
+      name: t("banking"),
       value: 1,
     },
   ];
@@ -107,7 +107,31 @@ function CheckoutPage() {
                 </div>
                 <div className={cx("order-info")}>
                   <div>{renderPaymentTypes}</div>
-                  <span>Vui lòng chuyển khoản với mã QR bên dưới</span>
+                  {paymentType === 1 && (
+                    <>
+                      <span>
+                        Vui lòng chuyển khoản theo số tài khoản hoặc với mã QR
+                        bên dưới
+                      </span>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          marginBottom: "8px",
+                        }}
+                      >
+                        <strong style={{ textAlign: "center" }}>
+                          BIDV - 55810000169933
+                        </strong>
+                        <strong style={{ textAlign: "center" }}>
+                          Trần Nhật Huy
+                        </strong>
+                      </div>
+                      <div>
+                        <img src={Qrcode} />
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
               <div className={cx("checkout-content")}>
@@ -116,7 +140,6 @@ function CheckoutPage() {
                 </div>
                 <div className={cx("order-info")}>
                   <FormCheckout paymentType={paymentType} />
-                  
                 </div>
               </div>
             </div>
@@ -131,9 +154,6 @@ function CheckoutPage() {
                 <div className={cx("")}>{t("total")}</div>
                 <div className={cx("")}>{cart ? total : ""}</div>
               </div>
-            </div>
-            <div>
-              <img src={Qrcode} />
             </div>
           </div>
         </div>

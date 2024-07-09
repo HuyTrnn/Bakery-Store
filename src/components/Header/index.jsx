@@ -18,6 +18,7 @@ import { useTranslation } from "react-i18next";
 import { FaCircle, FaLanguage, FaStar } from "react-icons/fa";
 import { TfiViewList } from "react-icons/tfi";
 import { setLanguage } from "~/store/slices/languageSlice";
+import ChangeLangueButton from "../Button/ChangeLangueButton";
 
 const cx = classNames.bind(styles);
 
@@ -212,12 +213,8 @@ function Header() {
                       </Link>
                       <div className={cx("action-item", "action-cart")}>
                         <div className={cx( "account-wrapper")} style={{display: "flex", alignItems:'center'}}>
-                          <FaLanguage />
-                          <ul className={cx("list-dropdown")}>
-                            <li onClick={() => dispatch(setLanguage('vi'))}><FaStar /> VI</li>
-                            <li onClick={() => dispatch(setLanguage('en'))}><TfiViewList /> EN</li>
-                            <li onClick={() => dispatch(setLanguage('ja'))}><FaCircle /> JA</li>
-                          </ul>
+                          
+                          <ChangeLangueButton />
                         </div>
                       </div>
                     </div>
