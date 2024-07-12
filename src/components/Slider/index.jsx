@@ -47,7 +47,7 @@ function Slider({ data, quantityDisplayed = 1 }) {
       </div>
 
       <div className={cx("container")} style={trackStyles}>
-        {data &&
+        {data && data.length > 0 &&
           data.map((item, index) => (
             <div className={cx("slide")} style={slideShow} key={item.id}>
               <Card content={item} />

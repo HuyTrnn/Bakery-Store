@@ -70,7 +70,7 @@ function Card({ content }) {
       <Link to={`/collections/${content.slug}/${content._id}`}>
         <div className={cx("container")}>
           <div className={cx("container-img")}>
-            <img src={content.images[0]} alt="product" />
+            <img src={content.images[0]} style={{width:'218px', height:'218px'}} alt="product" />
             {/* {content.new ? (
               <div className={cx("status")}>
                 {!content.stock ? "sold out" : "new in"}

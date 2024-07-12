@@ -42,7 +42,6 @@ function ProductDetailPage() {
 
   useEffect(() => {
     doGetProduct(productId);
-    console.log('test', lang);
   }, [productId, doGetProduct, lang]);
   const handleChangeQuantity = (value) => {
     setQuantity(value);

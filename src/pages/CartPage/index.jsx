@@ -46,9 +46,11 @@ function CartPage() {
   if (items) {
     renderCart = items.map((item) => {
       return (
-        <div className={cx("col", "l-12", "m-12", "c-12")} key={item.productId}>
+        items && items.length > 0 ?
+          <div className={cx("col", "l-12", "m-12", "c-12")} key={item.productId}>
           <ProductCartItem key={item.productId} product={item} />
-        </div>
+          </div>
+        : <NoCart />
       );
     });
   } else {

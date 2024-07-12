@@ -73,8 +73,8 @@ function FormCheckout({ paymentType, handleLoading }) {
     }),
     onSubmit: (values) => {
       doOrder({
-        cartid: JSON.parse(cartid),
-        payment: paymentType === 0 ? "COD" : "ATM",
+        cart_id: JSON.parse(cartid),
+        payment: paymentType === 0 ? 0 : 1,
         // items,
         // total,
         // email: user.email,
