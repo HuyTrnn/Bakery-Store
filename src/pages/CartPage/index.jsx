@@ -63,7 +63,7 @@ function CartPage() {
       </Helmet>
 
       {
-        (items.length === 0 && !isLoading) ? (
+        ( items && items.length === 0 && !isLoading) ? (
         <NoCart />
       ) : (
         <div className={cx("grid", "wide")}>

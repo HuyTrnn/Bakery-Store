@@ -118,13 +118,14 @@ function ContentTable() {
                       <Link
                         className="admin-table__info--data---link"
                         onClick={() => handleEditOrder(order)}
-                        to={`/admin/carts/order/${order.id}`}
+                        to={`/admin/carts/order/${order._id}`}
                       >
-                        #{order.id.toString().padStart(4, "0")}{" "}
+                        #{order._id.toString().padStart(4, "0")}{" "}
                       </Link>{" "}
                       <td> {order.created_at} </td>{" "}
                       <td> {order.recipient_name} </td>{" "}
-                      <td> {order.payment} </td> <td> {order.total_amount} </td>{" "}
+                      <td> {order.payment_method === 0 ? 'Thanh toán tiền mặt' : 'Chuyển khoản'} </td> 
+                      <td> {order.total_amount} </td>{" "}
                       <td> {changeState(order.status)} </td>{" "}
                     </tr>
                   ))

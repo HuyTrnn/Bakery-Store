@@ -54,7 +54,7 @@ function BillDetail({ order }) {
     })
     .then((res) => res.json())
     .then((data) => {
-      setBill(data);
+      setBill(data.data);
     });
     // setBill(json.bill);
     // setCustomers(json.customer);
@@ -87,33 +87,44 @@ function BillDetail({ order }) {
   // }, [bill.state]);
 
   const handleChangeOrder = (state) => {
-    fetch(`http://localhost:81/api/update-state-bill/${id}`, {
-      method: "POST",
+    fetch(`https://backpack-nu.vercel.app/api/auth/order/cancle/${bill._id}`, {
+      method: "GET",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
         token_type: "bearer",
         Authorization: `Bearer ${accessToken}`,
       },
-      body: JSON.stringify({
-        state: state,
-      }),
     })
       .then((res) => res.json())
       .then((data) => {
-        // do something with the response, like update the state of the bill in your application
+        alert(`Đã hủy đơn hàng ${id}`);
+        fetchOrder()
       })
       .catch((error) => {
         console.error("Error updating state of bill:", error);
       });
-    if (state == 3) {
-      alert(`Đã hủy đơn hàng ${id}`);
-      navigate("/admin/carts");
-    } else {
-      alert(`Đã thay đổi trạng thái`);
-      window.location.reload();
-    }
   };
+
+  const handleComplete = () => {
+    fetch(`https://backpack-nu.vercel.app/api/auth/order/completed/${bill._id}`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        token_type: "bearer",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        alert(`Cập nhật đơn hàng thành công!`);
+        fetchOrder()
+      })
+      .catch((error) => {
+        console.error("Error updating state of bill:", error);
+      });
+  }
 
   useEffect(() => {
     if (product.length > 0) {
@@ -137,9 +148,7 @@ function BillDetail({ order }) {
       case 0:
         return "Đơn chưa hoàn tất";
       case 1:
-        return "Đang giao hàng";
-      case 2:
-        return "Đã giao hàng";
+        return "Đã hoàn thành";
       case 3:
         return "Đơn hủy";
     }
@@ -153,6 +162,7 @@ function BillDetail({ order }) {
 
   // getImg();
   // console.log(status);
+  console.log(bill);
   return (
     <div style={{ width: "100%" }} className="order-detail__container">
       <div className="admin-content">
@@ -171,7 +181,7 @@ function BillDetail({ order }) {
                   </div>{" "}
                   <div className="order-detail__info--content">
                     {" "}
-                    {changeState(bill.state)}{" "}
+                    {changeState(bill.status)}{" "}
                   </div>{" "}
                 </div>{" "}
                 <div className="order-detail__info">
@@ -180,7 +190,7 @@ function BillDetail({ order }) {
                   </div>{" "}
                   <div className="order-detail__info--content">
                     {" "}
-                    {bill.payment}{" "}
+                    {bill.payment_method === 0 ? 'Thanh toán tiền mặt' : 'Chuyển khoản'}{" "}
                   </div>{" "}
                 </div>{" "}
               </div>{" "}
@@ -193,11 +203,11 @@ function BillDetail({ order }) {
                       Thao tác{" "}
                     </Button>{" "}
                     <div class="dropdown-content">
-                      <a onClick={() => handleChangeOrder(1)}>
+                      {/* <a onClick={() => handleChangeOrder(1)}>
                         {" "}
                         Đang giao hàng{" "}
-                      </a>{" "}
-                      <a onClick={() => handleChangeOrder(2)}>
+                      </a>{" "} */}
+                      <a onClick={() => handleComplete(2)}>
                         {" "}
                         Đã giao hàng{" "}
                       </a>{" "}
@@ -239,8 +249,8 @@ function BillDetail({ order }) {
                       </thead>{" "}
                       <tbody className="admin-table__info--data">
                         {" "}
-                        {productsUpdated &&
-                          billDetail.map((item, i) => (
+                        {bill.products &&
+                          bill.products.map((item, i) => (
                             <tr key={i}>
                               <td
                                 style={{
@@ -248,11 +258,11 @@ function BillDetail({ order }) {
                                   alignItems: "center",
                                 }}
                               >
-                                <span style={{ flex: 2 }}> {item.name} </span>{" "}
+                                <span style={{ flex: 2 }}> {item.product_name} </span>{" "}
                                 <div style={{ flex: 1 }}>
                                   <img
                                     className="img-product"
-                                    src={`data:image/png;base64,${product[i].product.image}`}
+                                    src={`${item.img}`}
                                   />{" "}
                                 </div>{" "}
                               </td>{" "}
@@ -260,8 +270,8 @@ function BillDetail({ order }) {
                                 {" "}
                                 {item.quantity}{" "}
                               </td>{" "}
-                              <td> {Number(item.unit_price)} </td>{" "}
-                              <td> {item.quantity * item.unit_price} </td>{" "}
+                              <td> {Number(item.price)} </td>{" "}
+                              <td> {item.quantity * item.price} </td>{" "}
                             </tr>
                           ))}{" "}
                       </tbody>{" "}
@@ -272,38 +282,34 @@ function BillDetail({ order }) {
                   <h3> Trạng thái đơn </h3>{" "}
                   <div className="order-content__bill">
                     <div className="order-content__bill--note">
-                      <h4> Ghi chú cho đơn hàng </h4>{" "}
-                      <textarea placeholder="Thêm ghi chú cho đơn hàng">
-                        {" "}
+                      <strong> Ghi chú cho đơn hàng </strong>{" "}
+                      <textarea value={bill.note} placeholder="Thêm ghi chú cho đơn hàng">
+                        
                       </textarea>{" "}
                       <Button className="order-detail__btn--delete btn">
                         Cập nhật{" "}
                       </Button>{" "}
                     </div>{" "}
                     <div className="order-content__bill--detail">
+                    
                       <div className="order-content__bill--detail---item">
                         <div>
-                          Số lượng sản phẩm <p> {totalQuantity} </p>{" "}
+                          Tổng tiền hàng <p> {bill.total_amount} </p>{" "}
                         </div>{" "}
                       </div>{" "}
-                      <div className="order-content__bill--detail---item">
-                        <div>
-                          Tổng tiền hàng <p> {bill.total} </p>{" "}
-                        </div>{" "}
-                      </div>{" "}
-                      <div className="order-content__bill--detail---item">
+                      {/* <div className="order-content__bill--detail---item">
                         <div>
                           Phí Ship <p> 0 đ </p>{" "}
                         </div>{" "}
-                      </div>{" "}
+                      </div>{" "} */}
                       <div className="order-content__bill--detail---item">
                         <div>
-                          Tổng giá trị thanh toán <p> {bill.total} </p>{" "}
+                          Tổng giá trị thanh toán <p> {bill.total_amount} </p>{" "}
                         </div>{" "}
                       </div>{" "}
                       <div className="order-content__bill--detail---item">
                         <div>
-                          Hình thức thanh toán <p> {bill.payment} </p>{" "}
+                          Hình thức thanh toán <p> {bill.payment_method === 0 ? 'Thanh toán tiền mặt' : 'Chuyển khoản'} </p>{" "}
                         </div>{" "}
                       </div>{" "}
                       <div className="order-content__bill--detail---item">
@@ -321,7 +327,7 @@ function BillDetail({ order }) {
                   <h3> Thông tin người mua </h3>{" "}
                 </div>{" "}
                 <div className="order-content__address--customer">
-                  <p> {customers.name} </p> <p> {customers.email} </p>{" "}
+                  <p> {bill.recipient_name} </p> <p> {bill.recipient_phone} </p>{" "}
                   <div className="order-content__address--customer---ordered">
                     <span> Đã đặt </span> <b> 3 đơn hàng </b>{" "}
                   </div>{" "}
@@ -337,16 +343,16 @@ function BillDetail({ order }) {
                       </div>{" "}
                     </div>{" "}
                     <div className="order-content__address--ship---customer">
-                      <div> {customers.name} </div>{" "}
-                      <div> {customers.phone_number} </div>{" "}
+                      <div> {bill.recipient_name} </div>{" "}
+                      <div> {bill.recipient_phone} </div>{" "}
                     </div>{" "}
                     <div className="order-content__address--ship---address">
-                      <h4> Địa chỉ giao hàng </h4> <p> {customers.address} </p>{" "}
+                      <h4> Địa chỉ giao hàng </h4> <p> {bill.shipping_address} </p>{" "}
                     </div>{" "}
                   </address>{" "}
                 </div>{" "}
                 <div className="order-content__address--note">
-                  <h4> Ghi chú về khách hàng </h4> <div> {customers.note} </div>{" "}
+                  <h4> Ghi chú về khách hàng </h4> <div> {bill.note} </div>{" "}
                 </div>{" "}
               </div>{" "}
             </div>{" "}
@@ -355,7 +361,7 @@ function BillDetail({ order }) {
       </div>{" "}
       {status ? null : (
         <div>
-          <Modal onStatus={handleModal} props={customers} />{" "}
+          <Modal onStatus={handleModal} props={bill} />{" "}
         </div>
       )}{" "}
     </div>

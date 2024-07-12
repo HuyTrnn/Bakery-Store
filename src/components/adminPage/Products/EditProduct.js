@@ -4,28 +4,33 @@ import HeaderContent from "../HeaderAdmin/headerContent";
 import { useNavigate } from "react-router-dom";
 import Button from "~/components/Button";
 import { useSelector } from "react-redux";
+import ChangeLangueButton from "~/components/Button/ChangeLangueButton";
+import { Flex, Select } from "antd";
+import { FaCircle, FaLanguage, FaStar } from "react-icons/fa";
+import { TfiViewList } from "react-icons/tfi";
 
 function EditProduct({ match }) {
   const [types, setTypes] = useState([]);
-
   const [product, setProduct] = useState([]);
   const [name, setName] = useState();
   const [images, setImages] = useState();
-  const [image, setImage] = useState();
+  const [imageUpload, setImageUpload] = useState();
   const [productType, setProductType] = useState();
   const [productTypeName, setProductTypeName] = useState();
   const [description, setDescription] = useState();
   const [promotion, setPromotion] = useState();
+  const [slug, setSlug] = useState();
   const [stock, setStock] = useState();
   const [price, setPrice] = useState();
   const [alreadyInStock, setAlreadyInStock] = useState();
+  const [key, setKey] = useState('vi');
   const navigate = useNavigate();
   const { id } = useParams();
-  const lang = useSelector(state => state.language.lang);
+  const lang = useSelector((state) => state.language.lang);
   const { status, isAuthenticated, user, accessToken } = useSelector(
     (state) => state.auth
   );
-
+  const [file, setFile] = useState();
   // Kiểm tra quyền truy cập và chuyển hướng nếu cần
   if (!user) {
     navigate("/login");
@@ -43,24 +48,35 @@ function EditProduct({ match }) {
   const navigateRouter = (url) => {
     navigate(url);
   };
+
+  
+
+  const fetchProducts = () => {
+    fetch(`https://backpack-nu.vercel.app/api/products/${id}`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        token_type: "bearer",
+        Authorization: `Bearer ${accessToken}`,
+        "Accept-Language": key,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setProduct(data.data);
+        getOldData(data.data);
+      })
+      .then((data) => {
+        fetch("http://localhost:81/api/products-type")
+          .then((res) => res.json())
+          .then((data) => {
+            setTypes(data.productByType);
+          });
+      });
+  };
   useEffect(() => {
-    const fetchProducts = () => {
-      fetch(`https://backpack-nu.vercel.app/api/products/${id}`, {})
-        .then((res) => res.json())
-        .then((data) => {
-          setProduct(data.data);
-          getOldData(data.data);
-        })
-        .then((data) => {
-          fetch("http://localhost:81/api/products-type")
-            .then((res) => res.json())
-            .then((data) => {
-              setTypes(data.productByType);
-            });
-        });
-    };
     fetchProducts();
-  }, []);
+  }, [key, id]);
 
   const getOldData = (data) => {
     setName(data.name);
@@ -69,6 +85,7 @@ function EditProduct({ match }) {
     setDescription(data.description.detail);
     setStock(data.stock);
     setPrice(data.price);
+    setSlug(data.slug)
     setProductTypeName(data.unit);
     setPromotion(data.promotion_price);
     setAlreadyInStock(data.new);
@@ -82,6 +99,9 @@ function EditProduct({ match }) {
       const base64String = reader.result.split(",")[1];
       setImages(base64String);
     };
+    if (e.target.files) {
+      setFile(e.target.files[0]);
+    }
   };
 
   function formDataToJson(formData) {
@@ -92,46 +112,26 @@ function EditProduct({ match }) {
     return JSON.stringify(jsonObject);
   }
 
-  async function updateProduct() {
-    // You can check the response from the API in the console
-  }
 
   function handleSubmit(event) {
     event.preventDefault();
 
     const formData = new FormData();
-    formData.append(`name[${lang}]`, name);
+    formData.append(`name[${key}]`, name);
     formData.append("type", productType);
     formData.append("price", price);
     formData.append("unit", productTypeName);
     formData.append("stock", stock);
-    formData.append("image", images);
+    formData.append('thumbnail', file);
     formData.append("promotion_price", 0);
     formData.append("new", 1);
-    formData.append(`description[${lang}][detail]`, description);
+    formData.append("slug", slug);
+    formData.append(`description[${key}][detail]`, description);
     const myJson = formDataToJson(formData);
-    console.log(
-      "name :",
-      name,
-      "id_type",
-      productType,
-      "unit",
-      productTypeName,
-      "price",
-      price,
-      "stock",
-      stock,
-      "img",
-      // images,
-      promotion,
-      alreadyInStock,
-      description,
-      productType
-    );
     fetch(`https://backpack-nu.vercel.app/api/auth/products/${id}`, {
       method: "PUT",
       headers: {
-        Accept: "application/json",
+        Accept: "multipart/form-data",
         "Content-Type": "application/json",
         token_type: "bearer",
         Authorization: `Bearer ${accessToken}`,
@@ -140,16 +140,17 @@ function EditProduct({ match }) {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data); // the newly added product object returned by the API
+        alert('Chỉnh sửa thành công')
+        fetchProducts()
       })
       .catch((error) => {
         alert("Có lỗi trong quá trình thay đổi:", error);
       });
-    alert("đã chỉnh sửa");
-
-    window.location.reload();
   }
-  console.log(product);
+
+  const onChange = (key) => {
+    setKey(key)
+  }
 
   const loading = true;
   return (
@@ -171,21 +172,41 @@ function EditProduct({ match }) {
                   />{" "}
                 </div>{" "}
                 <div className="addproduct-form__heading--unit">
-                  <label htmlFor="unit"> Loại sản phẩm </label>{" "}
+                  <label htmlFor="unit"> Ngôn ngữ </label>{" "}
                   <div className="select-dropdown">
-                    <select
-                      style={{ width: "100%" }}
-                      name="unit"
-                      value={productType}
-                      onChange={(e) => setProductType(e.target.value)}
-                    >
-                      {types.map((type, i) => (
-                        <option key={type.id} value={type.id}>
-                          {" "}
-                          {type.name}{" "}
-                        </option>
-                      ))}{" "}
-                    </select>{" "}
+                    <Select
+                      showSearch
+                      placeholder={<FaLanguage />}
+                      optionFilterProp="label"
+                      onChange={(value) => onChange(value)}
+                      // suffixIcon={<FaLanguage />}
+                      options={[
+                        {
+                          value: "vi",
+                          label: (
+                            <Flex align="center" gap={4}>
+                              <FaStar /> Vietnamese
+                            </Flex>
+                          ),
+                        },
+                        {
+                          value: "en",
+                          label: (
+                            <Flex align="center" gap={4}>
+                              <TfiViewList /> English
+                            </Flex>
+                          ),
+                        },
+                        {
+                          value: "ja",
+                          label: (
+                            <Flex align="center" gap={4}>
+                              <FaCircle /> Japanese
+                            </Flex>
+                          ),
+                        },
+                      ]}
+                    />
                   </div>{" "}
                 </div>{" "}
               </div>{" "}
@@ -208,19 +229,15 @@ function EditProduct({ match }) {
                     onChange={(e) => setStock(e.target.value)}
                   />{" "}
                 </div>{" "}
-              </div>{" "}
-              <div className="addproduct-form__image">
-                <label htmlFor="image"> Hình ảnh </label>{" "}
-                <input
-                  type="file"
-                  accept="image/jpeg,image/png"
-                  onChange={handleImageUpload}
-                />{" "}
-                <img
-                  style={{ width: "100%", height: "100%" }}
-                  src={`${images}`}
-                  onChange={handleImageUpload}
-                />{" "}
+                <div style={{marginLeft: '6px'}} className="addproduct-form__info--Stock">
+                  <label htmlFor="stock"> Loại </label>{" "}
+                  <input
+                    type="text"
+                    name="type"
+                    value={productType}
+                    onChange={(e) => setProductType(e.target.value)}
+                  />{" "}
+                </div>{" "}
               </div>{" "}
               <div className="addproduct-form__description">
                 <label htmlFor="description"> Chú thích </label>{" "}
@@ -232,7 +249,34 @@ function EditProduct({ match }) {
                   onChange={(e) => setDescription(e.target.value)}
                 ></textarea>{" "}
               </div>{" "}
-              <div className="addproduct-form__promotion">
+                <div className="addproduct-form__info--price">
+                  <label htmlFor="slug"> Tên miền </label>{" "}
+                  <input
+                    type="text"
+                    name="slug"
+                    value={slug}
+                    onChange={(e) => setSlug(e.target.value)}
+                  />{" "}
+                </div>{" "}
+                
+                
+             
+              
+              <div className="addproduct-form__image">
+                <label htmlFor="image"> Hình ảnh </label>{" "}
+                <input
+                  type="file"
+                  multiple
+                  accept="image/jpeg,image/png"
+                  onChange={handleImageUpload}
+                />{" "}
+                <img
+                  style={{ width: "100%", height: "340px" }}
+                  src={`${images}`}
+                  onChange={handleImageUpload}
+                />{" "}
+              </div>{" "}
+              {/* <div className="addproduct-form__promotion">
                 <label htmlFor="description"> Giảm giá </label>{" "}
                 <input
                   type="text"
@@ -241,7 +285,7 @@ function EditProduct({ match }) {
                   value={promotion}
                   onChange={(e) => setPromotion(e.target.value)}
                 />{" "}
-              </div>{" "}
+              </div>{" "} */}
               <div className="addproduct-form__btn">
                 <Button type="submit"> Cập nhật </Button>{" "}
               </div>{" "}

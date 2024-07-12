@@ -44,7 +44,7 @@ function ProductsPage() {
       fetch("https://backpack-nu.vercel.app/api/products")
         .then((res) => res.json())
         .then((data) => {
-          setProducts(data);
+          setProducts(data.data);
           setLoading(false);
         });
     };
