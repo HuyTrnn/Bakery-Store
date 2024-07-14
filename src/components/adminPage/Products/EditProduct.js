@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Button from "~/components/Button";
 import { useSelector } from "react-redux";
 import ChangeLangueButton from "~/components/Button/ChangeLangueButton";
-import { Flex, Select } from "antd";
+import { Flex, Select, Upload } from "antd";
 import { FaCircle, FaLanguage, FaStar } from "react-icons/fa";
 import { TfiViewList } from "react-icons/tfi";
 
@@ -25,7 +25,9 @@ function EditProduct({ match }) {
   const [alreadyInStock, setAlreadyInStock] = useState();
   const [key, setKey] = useState('vi');
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { id } = useParams();  
+  const [fileList, setFileList] = useState([]);
+  const [uploading, setUploading] = useState(false);
   const lang = useSelector((state) => state.language.lang);
   const { status, isAuthenticated, user, accessToken } = useSelector(
     (state) => state.auth
@@ -66,13 +68,6 @@ function EditProduct({ match }) {
         setProduct(data.data);
         getOldData(data.data);
       })
-      .then((data) => {
-        fetch("http://localhost:81/api/products-type")
-          .then((res) => res.json())
-          .then((data) => {
-            setTypes(data.productByType);
-          });
-      });
   };
   useEffect(() => {
     fetchProducts();
@@ -113,20 +108,24 @@ function EditProduct({ match }) {
   }
 
 
-  function handleSubmit(event) {
-    event.preventDefault();
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
     const formData = new FormData();
+    fileList.forEach((file) => {
+      formData.append('thumbnail', file);
+    });
+    setUploading(true);
     formData.append(`name[${key}]`, name);
     formData.append("type", productType);
     formData.append("price", price);
     formData.append("unit", productTypeName);
     formData.append("stock", stock);
-    formData.append('thumbnail', file);
     formData.append("promotion_price", 0);
     formData.append("new", 1);
     formData.append("slug", slug);
     formData.append(`description[${key}][detail]`, description);
+
     const myJson = formDataToJson(formData);
     fetch(`https://backpack-nu.vercel.app/api/auth/products/${id}`, {
       method: "PUT",
@@ -140,19 +139,36 @@ function EditProduct({ match }) {
     })
       .then((response) => response.json())
       .then((data) => {
-        alert('Chỉnh sửa thành công')
-        fetchProducts()
+        alert('Chỉnh sửa thành công');
+        fetchProducts();
+        setFileList([]);
       })
       .catch((error) => {
         alert("Có lỗi trong quá trình thay đổi:", error);
+      })
+      .finally(() => {
+        setUploading(false);
       });
-  }
+  };
 
   const onChange = (key) => {
-    setKey(key)
-  }
+    setKey(key);
+  };
 
-  const loading = true;
+  const props = {
+    onRemove: (file) => {
+      const index = fileList.indexOf(file);
+      const newFileList = fileList.slice();
+      newFileList.splice(index, 1);
+      setFileList(newFileList);
+    },
+    beforeUpload: (file) => {
+      setFileList([...fileList, file]);
+      return false;
+    },
+    fileList,
+  };
+
   return (
     <div className="addproducts-page">
       <div className="admin-content">
@@ -264,15 +280,18 @@ function EditProduct({ match }) {
               
               <div className="addproduct-form__image">
                 <label htmlFor="image"> Hình ảnh </label>{" "}
-                <input
+                {/* <input
                   type="file"
                   multiple
                   accept="image/jpeg,image/png"
                   onChange={handleImageUpload}
-                />{" "}
+                />{" "} */}
+                <Upload {...props}>
+                  <Button type="button">Select File</Button>
+                </Upload>
                 <img
                   style={{ width: "100%", height: "340px" }}
-                  src={`${images}`}
+                  src={`${file}`}
                   onChange={handleImageUpload}
                 />{" "}
               </div>{" "}
