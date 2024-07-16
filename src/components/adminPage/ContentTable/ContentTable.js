@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { FiEdit } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Button } from "antd";
+import { Button, Table } from "antd";
 
 function ContentTable() {
   const [orders, setOrders] = useState([]);
@@ -80,6 +80,56 @@ function ContentTable() {
   const sortOrder = filteredOrders.slice().reverse();
   const displayedOrder = sortOrder.slice(startIndex, endIndex);
 
+  const columns = [
+    {
+      title: "Mã đơn hàng",
+      dataIndex: "_id",
+      key: "id",
+      render: (text, record) => (
+        <Link
+          className="admin-table__info--data---link"
+          onClick={() => handleEditOrder(record)}
+          to={`/admin/carts/order/${record._id}`}
+        >
+          #{record._id.toString().padStart(4, "0")}
+        </Link>
+      ),
+      align: "center",
+    },
+    {
+      title: "Ngày tạo đơn",
+      dataIndex: "created_at",
+      key: "created_at",
+      align: "center",
+    },
+    {
+      title: "Khách hàng",
+      dataIndex: "recipient_name",
+      key: "recipient_name",
+      align: "center",
+    },
+    {
+      title: "Hình thức Thanh toán",
+      dataIndex: "payment_method",
+      key: "payment_method",
+      render: (text) => (text === 0 ? 'Thanh toán tiền mặt' : 'Chuyển khoản'),
+      align: "center",
+    },
+    {
+      title: "Tổng đơn",
+      dataIndex: "total_amount",
+      key: "total_amount",
+      align: "center",
+    },
+    {
+      title: "Trạng thái",
+      dataIndex: "status",
+      key: "status",
+      render: (text) => changeState(text),
+      align: "center",
+    },
+  ];
+
   return (
     <div className="admin-content">
       <HeaderContent props={"Sản phẩm"} />{" "}
@@ -104,38 +154,15 @@ function ContentTable() {
             <Button ><a href="https://backpack-nu.vercel.app/api/auth/download/orders">Xuất báo cáo</a></Button>
           </div>{" "}
           <div className="admin-table__info">
-            <table className="admin-table__info--show">
-              <thead className="admin-table__info--title">
-                <tr style={{ textAlign: "center" }}>
-                  <th> Mã đơn hàng </th> <th> Ngày tạo đơn </th>{" "}
-                  <th> Khách hàng </th> <th> Hình thức Thanh toán </th>{" "}
-                  <th> Tổng đơn </th> <th> Trạng thái </th>{" "}
-                </tr>{" "}
-              </thead>
-              <tbody className="admin-table__info--data">
-                {" "}
-                {displayedOrder ? (
-                  orders.map((order) => (
-                    <tr style={{ textAlign: "center" }} key={order.id}>
-                      <Link
-                        className="admin-table__info--data---link"
-                        onClick={() => handleEditOrder(order)}
-                        to={`/admin/carts/order/${order._id}`}
-                      >
-                        #{order._id.toString().padStart(4, "0")}{" "}
-                      </Link>{" "}
-                      <td> {order.created_at} </td>{" "}
-                      <td> {order.recipient_name} </td>{" "}
-                      <td> {order.payment_method === 0 ? 'Thanh toán tiền mặt' : 'Chuyển khoản'} </td> 
-                      <td> {order.total_amount} </td>{" "}
-                      <td> {changeState(order.status)} </td>{" "}
-                    </tr>
-                  ))
-                ) : (
-                  <tr> Không có đơn hàng nào </tr>
-                )}{" "}
-              </tbody>{" "}
-            </table>{" "}
+              <Table
+                className="admin-table__info--show"
+                columns={columns}
+                dataSource={displayedOrder ? orders : []}
+                rowKey="_id"
+                pagination={{
+                  pageSize: 10,
+                }}
+              />
             {/* <TablePagination
               style={{ fontSize: "16px" }}
               component="div"

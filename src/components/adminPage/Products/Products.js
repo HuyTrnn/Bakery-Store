@@ -8,11 +8,12 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import "../adminPage.scss";
 import { useSelector } from "react-redux";
-import { Button } from "antd";
+import { Button, Table } from "antd";
+import { render } from "@testing-library/react";
 
 function ProductsPage() {
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const startIndex = page * rowsPerPage;
@@ -40,17 +41,17 @@ function ProductsPage() {
   const navigateRouter = (url) => {
     navigate(url);
   };
+  const fetchProducts = () => {
+    setLoading(true)
+    fetch("https://backpack-nu.vercel.app/api/products")
+      .then((res) => res.json())
+      .then((data) => {
+        setProducts(data.data);
+        setLoading(false);
+      });
+  };
   useEffect(() => {
-    const fetchProducts = () => {
-      fetch("https://backpack-nu.vercel.app/api/products")
-        .then((res) => res.json())
-        .then((data) => {
-          setProducts(data.data);
-          setLoading(false);
-        });
-    };
     fetchProducts();
-    console.log("sản phẩm");
   }, []);
 
   function handleEditProduct(product) {
@@ -95,6 +96,62 @@ function ProductsPage() {
     setPage(0);
   };
 
+  let columns = [
+    {
+      title: "Mã sản phẩm",
+      dataIndex: "_id",
+      key: "_id",
+    },
+    {
+      title: "Ảnh",
+      dataIndex: "images",
+      key: "images",
+      render: (value) => (
+        <img alt="img" className="img-product" src={`${value[0]}`} />
+      ),
+    },
+    {
+      title: 'Giá',
+      dataIndex: "price",
+      key: "price",
+    },
+    {
+      title: 'Tồn',
+      dataIndex: "stock",
+      key: "stock",
+    },
+    {
+      title: 'Loại',
+      dataIndex: "type",
+      key: "type",
+    },
+    {
+      title: '',
+      dataIndex: "action",
+      key: "ctiona",
+      render: (value,option) => (<div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Link
+          style={{ marginRight: "6px" }}
+          onClick={() => handleEditProduct(option)}
+          to={`/admin/editproduct/${option._id}`}
+        >
+          <FiEdit />
+        </Link>{" "}
+        <AiOutlineDelete
+          onClick={() =>
+            alertDelete(option.name, option._id)
+          }
+        />{" "}
+      </div>)
+    },
+  ];
+
   return (
     <div className="products-page__container" style={{ width: "100%" }}>
       <div className="admin-content">
@@ -108,77 +165,49 @@ function ProductsPage() {
                 <button className="admin-table__btn--month"> </button>{" "}
               </div>{" "}
             </div>{" "}
-            <div style={{display: "flex", gap: "6px", float: "right", marginBottom: "4px"}}>
+            <div
+              style={{
+                display: "flex",
+                gap: "6px",
+                float: "right",
+                marginBottom: "4px",
+              }}
+            >
               <Button>
-                <a target="_blank" href="https://backpack-nu.vercel.app/api/download/stock-out-history">
+                <a
+                  target="_blank"
+                  href="https://backpack-nu.vercel.app/api/download/stock-out-history"
+                >
                   Xuất kho
                 </a>
               </Button>
               <Button>
-                <a target="_blank" href="https://backpack-nu.vercel.app/api/download/stock-history">
+                <a
+                  target="_blank"
+                  href="https://backpack-nu.vercel.app/api/download/stock-history"
+                >
                   Tồn kho
                 </a>
               </Button>
               <Button>
-                <a target="_blank" href="https://backpack-nu.vercel.app/api/download/stock-in-history">
+                <a
+                  target="_blank"
+                  href="https://backpack-nu.vercel.app/api/download/stock-in-history"
+                >
                   Nhập kho
                 </a>
               </Button>
             </div>
             <div className="admin-table__info">
-              <table className="admin-table__info--show">
-                <thead className="admin-table__info--title">
-                  <tr style={{ textAlign: "center" }}>
-                    <th> Mã sản phảm </th> <th> </th> <th> Tên </th>{" "}
-                    <th> Giá thành </th> <th> Tồn </th> <th> Loại </th>{" "}
-                    <th> Chỉnh sửa </th>{" "}
-                  </tr>{" "}
-                </thead>{" "}
-                <tbody className="admin-table__info--data">
-                  {" "}
-                  {loading ? (
-                    <div> </div>
-                  ) : (
-                    displayedProducts.map((product, index) => (
-                      <tr style={{ textAlign: "center" }} key={product.id}>
-                        <td> #{product._id} </td>{" "}
-                        <td style={{ width: "100px" }}>
-                          <img
-                            alt="img"
-                            className="img-product"
-                            src={`${product.images[0]}`}
-                          />{" "}
-                        </td>{" "}
-                        <td> {product.name} </td> <td> {product.price} </td>{" "}
-                        <td> {product.stock} </td> <td> {product.type} </td>{" "}
-                        <td>
-                          <div
-                            style={{
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                            }}
-                          >
-                            <Link
-                              style={{ marginRight: "6px" }}
-                              onClick={() => handleEditProduct(product)}
-                              to={`/admin/editproduct/${product._id}`}
-                            >
-                              <FiEdit />
-                            </Link>{" "}
-                            <AiOutlineDelete
-                              onClick={() =>
-                                alertDelete(product.name, product._id)
-                              }
-                            />{" "}
-                          </div>
-                        </td>{" "}
-                      </tr>
-                    ))
-                  )}{" "}
-                </tbody>{" "}
-              </table>{" "}
-              <TablePagination
+            <Table
+                dataSource={displayedProducts}
+                columns={columns}
+                loading={loading}
+                pagination={{
+                  pageSize: 10,
+                }}
+              />
+              {/* <TablePagination
                 style={{ fontSize: "16px" }}
                 component="div"
                 count={products.length}
@@ -186,7 +215,7 @@ function ProductsPage() {
                 onPageChange={handleChangePage}
                 rowsPerPage={rowsPerPage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
-              />{" "}
+              />{" "} */}
             </div>{" "}
           </div>{" "}
         </div>{" "}

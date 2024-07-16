@@ -112,23 +112,23 @@ function EditProduct({ match }) {
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData();
-    fileList.forEach((file) => {
-      formData.append('thumbnail', file);
-    });
+    // file && fileList.forEach((file) => {
+    //   formData.append('thumbnail', file);
+    // });
     setUploading(true);
-    formData.append(`name[${key}]`, name);
-    formData.append("type", productType);
-    formData.append("price", price);
-    // formData.append("unit", productTypeName);
-    formData.append("stock", stock);
-    formData.append("promotion_price", 0);
-    formData.append("new", 1);
-    formData.append("slug", slug);
-    formData.append(`description[${key}][detail]`, description);
+    name && formData.append(`name[${key}]`, name);
+    // productType && formData.append("type", productType);
+    // price && formData.append("price", price);
+    // // formData.append("unit", productTypeName);
+    // stock && formData.append("stock", stock);
+    // // formData.append("promotion_price", 0);
+    // // formData.append("new", 1);
+    // slug && formData.append("slug", slug);
+    // description && formData.append(`description[${key}][detail]`, description);
 
     const myJson = formDataToJson(formData);
     fetch(`https://backpack-nu.vercel.app/api/auth/products/${id}`, {
-      method: "PUT",
+      method: "POST",
       headers: {
         Accept: "multipart/form-data",
         "Content-Type": "application/json",

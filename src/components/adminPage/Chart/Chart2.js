@@ -1,92 +1,93 @@
 import {
-    LineChart,
-    Label,
-    Legend,
-    Bar,
-    BarChart,
-    Tooltip,
-    Cell,
-    Line,
-    CartesianGrid,
-    XAxis,
-    YAxis,
-  } from "recharts";
-  import { PieChart, Pie, Sector, ResponsiveContainer } from "recharts";
-  import React, { useState } from "react";
-  import { useEffect } from "react";
-  
-  function Chart2(data) {
-    
-    const [saleMonth, setSaleMonth] = useState([]);
-  
-    useEffect(() => {
-      const fetchRenevue = () => {
-        fetch("http://localhost:81/api/sales-report")
-          .then((res) => res.json())
-          .then((data) => {
-            setSaleMonth(data.sales_by_day_of_week);
-          });
-      };
-      fetchRenevue();
-    }, []);
+  LineChart,
+  Label,
+  Legend,
+  Bar,
+  BarChart,
+  Tooltip,
+  Cell,
+  Line,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+} from "recharts";
+import { PieChart, Pie, Sector, ResponsiveContainer } from "recharts";
+import React, { useState } from "react";
+import { useEffect } from "react";
 
-  
-   
-  
-  // Tạo danh sách 12 tháng trong năm
-//   const months = [
-//     { name: "Tháng 1", now: 0 },
-//     { name: "Tháng 2", now: 0 },
-//     { name: "Tháng 3", now: 0 },
-//     { name: "Tháng 4", now: 0 },
-//     { name: "Tháng 5", now: 0 },
-//     { name: "Tháng 6", now: 0 },
-//     { name: "Tháng 7", now: 0 },
-//     { name: "Tháng 8", now: 0 },
-//     { name: "Tháng 9", now: 0 },
-//     { name: "Tháng 10", now: 0 },
-//     { name: "Tháng 11", now: 0 },
-//     { name: "Tháng 12", now: 0 },
-//   ];
-  
-  // Gán giá trị doanh thu từ renevueYear cho danh sách tháng
-  const months = saleMonth.map(({ date, total_sales }) => ({
-    name: date,
-    total_sales
-  }));
-  
-  
-  
-    return (
-      <React.Fragment>
-        <div className="Chart">
-          <LineChart
-            width={500}
-            data={months}
-            height={300}
-            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" tickCount={12} />
-            <YAxis
-              label={{ angle: -90, position: "Left", marginRight: "20px"}}
-              tickCount={10}
-            />
-            <Tooltip />
-            <Legend />
-            <Line
-              type="monotone"
-              dataKey="total_sales"
-  
-              
-              stroke="#82ca9d"
-            />
-          </LineChart>
+function Chart2({props}) {
+  const [renevueYear, setRenevueYear] = useState([]);
+  const [renevuePreviousYear, setRenevuePreviousYear] = useState([]);
+
+  const [completed, setCompleted] = useState(props.total_order);
+  const [completedAmount, setCompletedAmount] = useState(props.total_order_completed);
+
+  // useEffect(() => {
+  //   const fetchRenevue = () => {
+  //     fetch("http://localhost:81/api/sales-report")
+  //       .then((res) => res.json())
+  //       .then((data) => {
+  //         setRenevueYear(data.sales_by_month_of_year);
+  //         setRenevuePreviousYear(data.sales_by_month_of_previous_year);
+  //       });
+  //   };
+  //   fetchRenevue();
+  // }, []);
+
+
+// Tạo danh sách 12 tháng trong năm
+const months = [
+  { name: "Tháng 1", notConfirm: completed['1'], confirmed: completedAmount['1'] },
+  { name: "Tháng 2", notConfirm: completed['2'], confirmed: completedAmount['2'] },
+  { name: "Tháng 3", notConfirm: completed['3'], confirmed: completedAmount['3'] },
+  { name: "Tháng 4", notConfirm: completed['4'], confirmed: completedAmount['4'] },
+  { name: "Tháng 5", notConfirm: completed['5'], confirmed: completedAmount['5'] },
+  { name: "Tháng 6", notConfirm: completed['6'], confirmed: completedAmount['6'] },
+  { name: "Tháng 7", notConfirm: completed['7'], confirmed: completedAmount['7'] },
+  { name: "Tháng 8", notConfirm: completed['8'], confirmed: completedAmount['8'] },
+  { name: "Tháng 9", notConfirm: completed['9'], confirmed: completedAmount['9'] },
+  { name: "Tháng 10", notConfirm: completed['10'], confirmed: completedAmount['10'] },
+  { name: "Tháng 11", notConfirm: completed['11'], confirmed: completedAmount['11'] },
+  { name: "Tháng 12", notConfirm: completed['12'], confirmed: completedAmount['12'] },
+];
+ 
+
+  return (
+    <React.Fragment>
+      <div className="Chart">
+        <LineChart
+          width={500}
+          data={months}
+          height={300}
+          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" tickCount={12} />
+          <YAxis
+            label={{ value: "Doanh thu", angle: -90, position: "Left", marginRight: "20px"}}
+            tickCount={5}
+          />
+          <Tooltip />
+          <Legend />
+          <Line
+            type="monotone"
+            dataKey="notConfirm"
+
+            
+            stroke="#82ca9d"
+          />
+          <Line
+            type="monotone"
+            dataKey="confirmed"
+            
+            stroke="#8884d8"
+          />
           
-        </div>
-      </React.Fragment>
-    );
-  }
-  
-  export default Chart2;
-  
+        </LineChart>
+
+      </div>
+    </React.Fragment>
+  );
+}
+
+export default Chart2;

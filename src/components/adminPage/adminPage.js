@@ -53,7 +53,7 @@ function AdminPage() {
   const [month, setMonth] = useState();
   const [year, setYear] = useState();
   const [topProduct, setTopProduct] = useState();
-
+  const [monthInYear, setMonthInYear] = useState();
   function sortItemsBySales(items) {
     return items.sort((a, b) => b.sales - a.sales);
   }
@@ -71,6 +71,22 @@ function AdminPage() {
       .then((res) => res.json())
       .then((data) => {
         setTopProduct(sortItemsBySales(data.data));
+      });
+  };
+
+  const fetchMonthInYear = () => {
+    fetch("https://backpack-nu.vercel.app/api/statistics-monthly", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        accept: "application/json",
+        token_type: "bearer",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setMonthInYear(data.data);
       });
   };
 
@@ -125,6 +141,7 @@ function AdminPage() {
     fecthOrderMonth();
     fecthOrderYear();
     fetchProductsSale();
+    fetchMonthInYear()
   }, []);
 
   // useEffect(() => {});
@@ -297,7 +314,7 @@ function AdminPage() {
                 <div className="admin-statistics__data--label">
                   <div> Doanh thu </div>{" "}
                 </div>{" "}
-                <Chart2 props={data} />{" "}
+                {monthInYear && <Chart2 props={monthInYear} />}
               </div>{" "}
             </div>{" "}
           </div>{" "}
@@ -345,30 +362,14 @@ function AdminPage() {
             className="admin-statistics__data"
           >
             <div className="admin-statistics__data--chart">
-              <label> Đặt Hàng theo ngày </label>{" "}
+              <label> Doanh thu trong năm</label>{" "}
               <div
                 style={{ display: "flex" }}
                 className="admin-statistics__data--label "
               >
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    marginBottom: "10px",
-                  }}
-                >
-                  <span> Tổng doanh thu hiện tại: {totalNow} </span>{" "}
-                  <span> Tổng thu năm trước: {totalPrevious} </span>{" "}
-                </div>{" "}
-                <div style={{ marginLeft: "50px" }}>
-                  <span>
-                    {" "}
-                    Tỷ lệ tăng trưởng:{" "}
-                    {((totalNow / totalPrevious) * 100).toFixed(3)} %{" "}
-                  </span>{" "}
-                </div>{" "}
+            
               </div>{" "}
-              <Chart props={data} />{" "}
+              {monthInYear && <Chart props={monthInYear} />}
             </div>{" "}
           </div>{" "}
         </div>{" "}

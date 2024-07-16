@@ -161,7 +161,7 @@
       }
 
       &__description {
-        height: 200px;
+        height: 150px;
         z-index: 5;
         input {
           display: block;
@@ -306,9 +306,11 @@
 }
 
 .admin-content {
-  .ant-spin-container {
-    width: 500px;
-    padding: 0 8px;
+  .admin-statistics__data--piechart {
+    .ant-spin-container {
+      width: 500px;
+      padding: 0 8px;
+    }
   }
 }
 

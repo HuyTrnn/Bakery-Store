@@ -15,55 +15,41 @@ import { PieChart, Pie, Sector, ResponsiveContainer } from "recharts";
 import React, { useState } from "react";
 import { useEffect } from "react";
 
-function Chart() {
+function Chart({props}) {
   const [renevueYear, setRenevueYear] = useState([]);
   const [renevuePreviousYear, setRenevuePreviousYear] = useState([]);
 
-  useEffect(() => {
-    const fetchRenevue = () => {
-      fetch("http://localhost:81/api/sales-report")
-        .then((res) => res.json())
-        .then((data) => {
-          setRenevueYear(data.sales_by_month_of_year);
-          setRenevuePreviousYear(data.sales_by_month_of_previous_year);
-        });
-    };
-    fetchRenevue();
-  }, []);
+  const [completed, setCompleted] = useState(props.total_amount_completed);
+  const [completedAmount, setCompletedAmount] = useState(props.total_amount);
+
+  // useEffect(() => {
+  //   const fetchRenevue = () => {
+  //     fetch("http://localhost:81/api/sales-report")
+  //       .then((res) => res.json())
+  //       .then((data) => {
+  //         setRenevueYear(data.sales_by_month_of_year);
+  //         setRenevuePreviousYear(data.sales_by_month_of_previous_year);
+  //       });
+  //   };
+  //   fetchRenevue();
+  // }, []);
 
 
 // Tạo danh sách 12 tháng trong năm
 const months = [
-  { name: "Tháng 1", now: 0, lastYear: 0 },
-  { name: "Tháng 2", now: 0, lastYear: 0 },
-  { name: "Tháng 3", now: 0, lastYear: 0 },
-  { name: "Tháng 4", now: 0, lastYear: 0 },
-  { name: "Tháng 5", now: 0, lastYear: 0 },
-  { name: "Tháng 6", now: 0, lastYear: 0 },
-  { name: "Tháng 7", now: 0, lastYear: 0 },
-  { name: "Tháng 8", now: 0, lastYear: 0 },
-  { name: "Tháng 9", now: 0, lastYear: 0 },
-  { name: "Tháng 10", now: 0, lastYear: 0 },
-  { name: "Tháng 11", now: 0, lastYear: 0 },
-  { name: "Tháng 12", now: 0, lastYear: 0 },
+  { name: "Tháng 1", now: completed['1'], confirmed: completedAmount['1'] },
+  { name: "Tháng 2", now: completed['2'], confirmed: completedAmount['2'] },
+  { name: "Tháng 3", now: completed['3'], confirmed: completedAmount['3'] },
+  { name: "Tháng 4", now: completed['4'], confirmed: completedAmount['4'] },
+  { name: "Tháng 5", now: completed['5'], confirmed: completedAmount['5'] },
+  { name: "Tháng 6", now: completed['6'], confirmed: completedAmount['6'] },
+  { name: "Tháng 7", now: completed['7'], confirmed: completedAmount['7'] },
+  { name: "Tháng 8", now: completed['8'], confirmed: completedAmount['8'] },
+  { name: "Tháng 9", now: completed['9'], confirmed: completedAmount['9'] },
+  { name: "Tháng 10", now: completed['10'], confirmed: completedAmount['10'] },
+  { name: "Tháng 11", now: completed['11'], confirmed: completedAmount['11'] },
+  { name: "Tháng 12", now: completed['12'], confirmed: completedAmount['12'] },
 ];
-
-// Gán giá trị doanh thu từ renevueYear cho danh sách tháng
-renevueYear.forEach((revenue) => {
-  const month = months[revenue.month - 1];
-  if (month) {
-    month.now = revenue.total_sales;
-    month.lastYear = revenue.total_sales;
-  }
-});
-
-// Gán giá trị doanh thu từ renevuePreviousYear cho danh sách tháng
-renevuePreviousYear.forEach((revenue) => {
-  const month = months[revenue.month - 1];
-  if (month) {
-    month.now = revenue.total_sales;
-  }
-});
  
 
   return (
@@ -92,13 +78,13 @@ renevuePreviousYear.forEach((revenue) => {
           />
           <Line
             type="monotone"
-            dataKey="lastYear"
+            dataKey="confirmed"
             
             stroke="#8884d8"
           />
           
         </LineChart>
-        |
+
       </div>
     </React.Fragment>
   );

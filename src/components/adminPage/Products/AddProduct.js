@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { Flex, Select, Upload } from "antd";
 import { FaCircle, FaLanguage, FaStar } from "react-icons/fa";
 import { TfiViewList } from "react-icons/tfi";
+import UploadImg from "../Form/UploadImg";
 
 function AddProduct() {
   const navigate = useNavigate();
@@ -20,7 +21,11 @@ function AddProduct() {
   const [imageUpload, setImageUpload] = useState();
   const [productType, setProductType] = useState();
   const [productTypeName, setProductTypeName] = useState();
+
   const [description, setDescription] = useState();
+  const [descriptionEN, setDescriptionEN] = useState();
+  const [descriptionJA, setDescriptionJA] = useState();
+
   const [promotion, setPromotion] = useState();
   const [slug, setSlug] = useState();
   const [stock, setStock] = useState();
@@ -33,6 +38,8 @@ function AddProduct() {
   const { status, isAuthenticated, user, accessToken } = useSelector(
     (state) => state.auth
   );
+
+  const [image, setImage] = useState();
   // useEffect(() => {
   //   const fetchProducts = () => {
   //     fetch("http://localhost:81/api/products-type")
@@ -61,16 +68,16 @@ function AddProduct() {
     navigate(url);
   };
 
-  // const handleImageUpload = (e) => {
-  //   const file = e.target.files[0];
-  //   const reader = new FileReader();
-  //   reader.readAsDataURL(file);
-  //   reader.onloadend = () => {
-  //     setImage(reader.result);
-  //     const base64String = reader.result.split(",")[1];
-  //     setImages(base64String);
-  //   };
-  // };
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setImage(reader.result);
+      const base64String = reader.result.split(",")[1];
+      setImages(base64String);
+    };
+  };
 
   function formDataToJson(formData) {
     let jsonObject = {};
@@ -83,10 +90,10 @@ function AddProduct() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData();
-    fileList.forEach((file) => {
-      formData.append('thumbnail', file);
-      formData.append('detail[]', file);
-    });
+    // fileList.forEach((file) => {
+    // });
+    formData.append('thumbnail', images);
+    formData.append('detail[]', images);
     formData.append(`name[vi]`, name);
     formData.append(`name[en]`, nameEN);
     formData.append(`name[ja]`, nameJA);
@@ -182,7 +189,7 @@ function AddProduct() {
                     onChange={(e) => setNameJA(e.target.value)}
                   />{" "}
                 </div>{" "}
-                <div className="addproduct-form__heading--unit">
+                {/* <div className="addproduct-form__heading--unit">
                   <label htmlFor="unit"> Ngôn ngữ </label>{" "}
                   <div className="select-dropdown">
                     <Select
@@ -219,7 +226,7 @@ function AddProduct() {
                       ]}
                     />
                   </div>{" "}
-                </div>{" "}
+                </div>{" "} */}
               </div>{" "}
               <div className="addproduct-form__info">
                 <div className="addproduct-form__info--price">
@@ -260,6 +267,26 @@ function AddProduct() {
                   onChange={(e) => setDescription(e.target.value)}
                 ></textarea>{" "}
               </div>{" "}
+              <div className="addproduct-form__description">
+                <label htmlFor="description"> Chú thích (en)</label>{" "}
+                <textarea
+                  type="text"
+                  placeholder="Chú thích về sản phẩm..."
+                  name="description"
+                  value={descriptionEN}
+                  onChange={(e) => setDescriptionEN(e.target.value)}
+                ></textarea>{" "}
+              </div>{" "}
+              <div className="addproduct-form__description">
+                <label htmlFor="description"> Chú thích (ja)</label>{" "}
+                <textarea
+                  type="text"
+                  placeholder="Chú thích về sản phẩm..."
+                  name="description"
+                  value={descriptionJA}
+                  onChange={(e) => setDescriptionJA(e.target.value)}
+                ></textarea>{" "}
+              </div>{" "}
                 <div className="addproduct-form__info--price">
                   <label htmlFor="slug"> Tên miền </label>{" "}
                   <input
@@ -274,16 +301,14 @@ function AddProduct() {
              
               
               <div className="addproduct-form__image">
-                <label htmlFor="image"> Hình ảnh </label>{" "}
-                {/* <input
+
+                <input
                   type="file"
                   multiple
                   accept="image/jpeg,image/png"
                   onChange={handleImageUpload}
-                />{" "} */}
-                <Upload {...props}>
-                  <Button type="button">Select File</Button>
-                </Upload>
+                />{" "}
+                {/* <UploadImg /> */}
                 {/* <img
                   style={{ width: "100%", height: "340px" }}
                   src={`${file}`}
