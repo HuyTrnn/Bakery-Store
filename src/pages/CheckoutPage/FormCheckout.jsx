@@ -9,6 +9,8 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import ModalPopUp from "./ModalPopUp";
 import { IoIosArrowBack } from "react-icons/io";
+import emailjs from "@emailjs/browser";
+import { toast } from "react-toastify";
 
 const cx = classNames.bind(styles);
 
@@ -18,6 +20,9 @@ function FormCheckout({ paymentType, handleLoading }) {
   const { items, total } = useSelector((state) => state.cart.data);
   const { user } = useSelector((state) => state.auth);
   const cartid = localStorage.getItem("cart_id")
+  
+
+  useEffect(() => emailjs.init("CyBpIyv6FiXqhthxY"), []);
 
   const handleOpen = () => {
     setIsOpen(true);
@@ -54,6 +59,22 @@ function FormCheckout({ paymentType, handleLoading }) {
     </div>
   );
 
+  const onSSendMail = async (name, address, phone) => {
+    const serviceId = "service_b4ytbgo";
+    const templateId = "template_3fsju9p";
+    try {
+      const send = await emailjs.send(serviceId, templateId, {
+        from_name: "Have goods day",
+        to_name: name,
+        message: `${address} - ${phone}`,
+        receive:  name,
+      });
+      
+    } catch (error) {
+      console.error("Error calling API:", error);
+    }
+  };
+
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -83,6 +104,7 @@ function FormCheckout({ paymentType, handleLoading }) {
         recipient_name: values.name,
         note: values.note,
       });
+      onSSendMail(values.name, values.address, values.phoneNumber)
     },
   });
 

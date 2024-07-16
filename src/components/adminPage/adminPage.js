@@ -10,6 +10,7 @@ import AdminPieChart from "../adminPage/Chart/PieChart";
 import AdminPieChart2 from "../adminPage/Chart/PieChart2";
 import { Navigate, useNavigate } from "react-router-dom";
 import { MdUpdate } from "react-icons/md";
+import { Avatar, List } from "antd";
 
 function AdminPage() {
   const navigate = useNavigate();
@@ -47,40 +48,83 @@ function AdminPage() {
   const [saleMonth, setSaleMonth] = useState([]);
   const [renevueYear, setRenevueYear] = useState([]);
   const [renevuePreviousYear, setRenevuePreviousYear] = useState([]);
+
+  const [day, setDay] = useState();
+  const [month, setMonth] = useState();
+  const [year, setYear] = useState();
+  const [topProduct, setTopProduct] = useState();
+
+  function sortItemsBySales(items) {
+    return items.sort((a, b) => b.sales - a.sales);
+  }
+
+  const fetchProductsSale = () => {
+    fetch("https://backpack-nu.vercel.app/api/auth/products-stock-history", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        accept: "application/json",
+        token_type: "bearer",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setTopProduct(sortItemsBySales(data.data));
+      });
+  };
+
+  const fecthOrderDay = () => {
+    fetch("https://backpack-nu.vercel.app/api/statistics/day", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        accept: "application/json",
+        token_type: "bearer",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setDay(data.data);
+      });
+  };
+  const fecthOrderMonth = () => {
+    fetch("https://backpack-nu.vercel.app/api/statistics/month", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        accept: "application/json",
+        token_type: "bearer",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setMonth(data.data);
+      });
+  };
+  const fecthOrderYear = () => {
+    fetch("https://backpack-nu.vercel.app/api/statistics/year", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        accept: "application/json",
+        token_type: "bearer",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setYear(data.data);
+      });
+  };
+
   useEffect(() => {
-    const fecthOrder = () => {
-      fetch("https://backpack-nu.vercel.app/api/auth/orders", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          accept: "application/json",
-          token_type: "bearer",
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
-        .then((res) => res.json())
-        // .then((data) => {
-        //   setOrders(data);
-        // })
-        // .then(
-        //   fetch("http://localhost:81/api/sales-report", {
-        //     method: "GET",
-        //     headers: {
-        //       "Content-Type": "application/json",
-        //       accept: "application/json",
-        //       token_type: "bearer",
-        //       Authorization: `Bearer ${accessToken}`,
-        //     },
-        //   })
-        //     .then((res) => res.json())
-        //     .then((data) => {
-        //       setSaleMonth(data.sales_by_day_of_week);
-        //       setRenevueYear(data.sales_by_month_of_year);
-        //       setRenevuePreviousYear(data.sales_by_month_of_previous_year);
-        //     })
-        // );
-    };
-    fecthOrder();
+    fecthOrderDay();
+    fecthOrderMonth();
+    fecthOrderYear();
+    fetchProductsSale();
   }, []);
 
   // useEffect(() => {});
@@ -97,7 +141,7 @@ function AdminPage() {
     var orderDone = 0;
     var orderCancel = 0;
 
-    if(orders){
+    if (orders) {
       data.forEach((order) => {
         totalOrder = order.total + totalOrder;
         if (order.payment == "COD") {
@@ -116,12 +160,14 @@ function AdminPage() {
       setOrderCancel(orderCancel);
     }
   }
-  const codCount = orders && orders.reduce((count, item) => {
-    if (item.state == 1 || (item.state == 2 && item.payment === "COD")) {
-      return count + 1;
-    }
-    return count;
-  }, 0);
+  const codCount =
+    orders &&
+    orders.reduce((count, item) => {
+      if (item.state == 1 || (item.state == 2 && item.payment === "COD")) {
+        return count + 1;
+      }
+      return count;
+    }, 0);
 
   const data = {
     orders: orders.length,
@@ -155,53 +201,45 @@ function AdminPage() {
         <div className="admin-statistics">
           <div className="admin-statistics__container">
             <div className="admin-statistics__data">
-              <label> Tổng đơn </label>{" "}
+              <label> Tổng doanh thu đơn hàng trong ngày</label>{" "}
               <div className="admin-statistics__data--table">
                 <div className="admin-statistics__data--table---value">
                   Tổng số đơn:
-                  <span> {orders && orders.length} </span>{" "}
+                  <span> {day && day.total_order} </span>{" "}
                 </div>{" "}
                 <div className="admin-statistics__data--table---value">
-                  Tổng Thu:
-                  <span> {orderTotal && orderTotal} </span>{" "}
+                  Tổng số đơn hoàn thành:
+                  <span> {day && day.total_order_completed} </span>{" "}
                 </div>{" "}
-                {
-                  orders && <div className="admin-statistics__data--table---value">
-                  Hình thức: COD {orderCod}, Banking {orders.length - orderCod}{" "}
+                <div className="admin-statistics__data--table---value">
+                  Doanh thu dự kiến:
+                  <span> {day && day.total_amount} </span>{" "}
                 </div>
-                }
+                <div className="admin-statistics__data--table---value">
+                  Doanh thu thực tế:
+                  <span> {day && day.total_amount_completed} </span>{" "}
+                </div>
               </div>{" "}
             </div>{" "}
-            {/* <div className="admin-statistics__data">
-                                                                          <label>Tổng doanh thu</label>
-                                                                          <div className="admin-statistics__data--table">
-                                                                            <div className="admin-statistics__data--table---value">
-                                                                              Tổng doanh thu:
-                                                                              <span>{orderTotal}</span>
-                                                                            </div>
-                                                                            <div className="admin-statistics__data--table---value">
-                                                                              COD: <span>{orderCod}</span>
-                                                                            </div>
-                                                                            <div className="admin-statistics__data--table---value">
-                                                                              Banking: <span>{orderBank}</span>
-                                                                            </div>
-                                                                          </div>
-                                                                        </div> */}{" "}
             <div className="admin-statistics__data">
-              <label> Đơn hoàn tất </label>{" "}
+              <label> Tổng doanh thu đơn hàng trong tháng </label>{" "}
               <div className="admin-statistics__data--table">
                 <div className="admin-statistics__data--table---value">
-                  Tổng đơn hoàn tất:
-                  <span> {done} </span>{" "}
+                  Tổng số đơn:
+                  <span> {month && month.total_order} </span>{" "}
                 </div>{" "}
                 <div className="admin-statistics__data--table---value">
-                  ATM:
-                  <span> {done - codCount} </span>{" "}
+                  Tổng số đơn hoàn thành:
+                  <span> {month && month.total_order_completed} </span>{" "}
                 </div>{" "}
                 <div className="admin-statistics__data--table---value">
-                  COD:
-                  <span> {codCount} </span>{" "}
-                </div>{" "}
+                  Doanh thu dự kiến:
+                  <span> {month && month.total_amount} </span>{" "}
+                </div>
+                <div className="admin-statistics__data--table---value">
+                  Doanh thu thực tế:
+                  <span> {month && month.total_amount_completed} </span>{" "}
+                </div>
               </div>{" "}
             </div>{" "}
             {/* <div className="admin-statistics__data">
@@ -220,50 +258,42 @@ function AdminPage() {
                                                                         </div> */}{" "}
           </div>{" "}
         </div>{" "}
-        <div className="admin-statistics__chart">
+        <div style={{ minWidth: "500px" }} className="admin-statistics__chart">
           <div className="admin-statistics__chart--payment">
             <div className="admin-statistics__data">
               <div className="admin-statistics__data--piechart">
-                <label> Số Lượng Đặt Hàng </label>{" "}
-                <div className="admin-statistics__data--label">
-                  <span> {orders && orders.length} </span> Đơn hàng{" "}
-                  <div> Đơn đã hoàn tất: {done} </div>{" "}
-                  <div> Đơn đã hủy: {orderCancel} </div>{" "}
-                </div>{" "}
-                <div className="admin-statistics__data--ratio">
-                  Tỷ lệ hủy đơn:{" "}
-                  {
-                    <span>
-                      {" "}
-                      {orders && (
-                        (Number(orderCancel) / Number(orders.length)) *
-                        100
-                      ).toFixed(2)}{" "}
-                      %
-                    </span>
-                  }{" "}
-                </div>{" "}
-                <AdminPieChart2 props={data} />{" "}
-              </div>{" "}
-              <div className="admin-statistics__chart--description">
-                <div>
-                  <span className="description-span ordercod"> </span>Đơn đã
-                  hoàn tất{" "}
-                </div>{" "}
-                <div>
-                  <span className="description-span orderbank"> </span>Đơn
-                  Banking{" "}
-                </div>{" "}
-                <div>
-                  <span className="description-span ordercancel"> </span>Đơn Hủy{" "}
-                </div>{" "}
+                <label> Top các sản phẩm bán chạy</label>{" "}
+                {topProduct && (
+                  <List
+                    itemLayout="horizontal"
+                    dataSource={topProduct.slice(0, 5)}
+                    renderItem={(item, index) => (
+                      <List.Item>
+                        <List.Item.Meta
+                          avatar={
+                            <Avatar
+                              src={item.product_image}
+                            />
+                          }
+                          title={
+                            <a href="https://ant.design">{item.product_name}</a>
+                          }
+                          description={<div style={{display: 'flex', justifyContent: 'space-between'}}>
+                            <span>Tổng số lượng: {item.total_quantity}</span>
+                            <span>Số lượng bán: {item.sales}</span>
+                          </div>}
+                        />
+                      </List.Item>
+                    )}
+                  />
+                )}
               </div>{" "}
             </div>{" "}
           </div>{" "}
           <div className="admin-statistics__chart--payment">
             <div className="admin-statistics__data">
               <div className="admin-statistics__data--piechart">
-                <label> Đặt Hàng theo ngày </label>{" "}
+                <label> Đặt Hàng theo năm</label>{" "}
                 <div className="admin-statistics__data--label">
                   <div> Doanh thu </div>{" "}
                 </div>{" "}
@@ -272,6 +302,35 @@ function AdminPage() {
             </div>{" "}
           </div>{" "}
         </div>{" "}
+        {/* <div
+          style={{
+            width: "50%",
+            padding: "0 30px",
+          }}
+        >
+          <div style={{
+            padding: "8px",
+            backgroundColor: "#fff",
+          }}>
+            <List
+              itemLayout="horizontal"
+              dataSource={dataProduct}
+              renderItem={(item, index) => (
+                <List.Item>
+                  <List.Item.Meta
+                    avatar={
+                      <Avatar
+                        src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${index}`}
+                      />
+                    }
+                    title={<a href="https://ant.design">{item.title}</a>}
+                    description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+                  />
+                </List.Item>
+              )}
+            />
+          </div>
+        </div> */}
         <div
           style={{
             padding: "70px",

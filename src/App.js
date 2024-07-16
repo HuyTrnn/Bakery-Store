@@ -25,9 +25,9 @@ function App() {
     } else if (data) {
       const cartJson = localStorage.getItem(`language`);
       // let lang = JSON.parse(cartJson);
-      if (cartJson) {
-        dispatch(setLanguage(cartJson));
-      }
+      // if (cartJson) {
+      //   dispatch(setLanguage(cartJson));
+      // }
     }
   }, [isLoading, error, data, dispatch]);
 

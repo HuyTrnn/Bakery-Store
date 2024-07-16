@@ -32,5 +32,10 @@
     "cod": "Thanh toán khi nhận hàng",
     "banking": "Chuyển khoản",
     "confirm": "Xác nhận",
-    "salary": "Mức lương"
+    "salary": "Mức lương",
+    "date": "Ngày đặt",
+    "receive": "Tên người nhận",
+    "phonenumber": "Số điện thoại",
+    "BankOrCod": "Phương thức thanh toán",
+    "totalCost": "Tổng đơn"
 }

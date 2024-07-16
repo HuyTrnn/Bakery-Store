@@ -87,7 +87,7 @@ function BillDetail({ order }) {
   // }, [bill.state]);
 
   const handleChangeOrder = (state) => {
-    fetch(`https://backpack-nu.vercel.app/api/auth/order/cancle/${bill._id}`, {
+    fetch(`https://backpack-nu.vercel.app/api/auth/order/cancel/${bill._id}`, {
       method: "GET",
       headers: {
         Accept: "application/json",

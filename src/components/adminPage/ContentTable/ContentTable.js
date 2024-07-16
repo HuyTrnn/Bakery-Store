@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { FiEdit } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { Button } from "antd";
 
 function ContentTable() {
   const [orders, setOrders] = useState([]);
@@ -93,13 +94,14 @@ function ContentTable() {
           </div>{" "}
           <div className="admin-table__search">
             <p className="admin-table__search--description"> Danh sách đơn </p>{" "}
-            <input
+            {/* <input
               type="text"
               className="admin-search__input"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Tìm kiếm theo tên khách hàng"
-            />
+            /> */}
+            <Button ><a href="https://backpack-nu.vercel.app/api/auth/download/orders">Xuất báo cáo</a></Button>
           </div>{" "}
           <div className="admin-table__info">
             <table className="admin-table__info--show">

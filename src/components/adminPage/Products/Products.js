@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import "../adminPage.scss";
 import { useSelector } from "react-redux";
+import { Button } from "antd";
 
 function ProductsPage() {
   const [products, setProducts] = useState([]);
@@ -66,7 +67,7 @@ function ProductsPage() {
   };
 
   const handleDelete = (id) => {
-    fetch(`http://localhost:81/api/products/${id}`, {
+    fetch(`https://backpack-nu.vercel.app/api/auth/products/${id}`, {
       method: "DELETE",
       headers: {
         Accept: "application/json",
@@ -107,7 +108,23 @@ function ProductsPage() {
                 <button className="admin-table__btn--month"> </button>{" "}
               </div>{" "}
             </div>{" "}
-            <p className="admin-table__description"> Description </p>{" "}
+            <div style={{display: "flex", gap: "6px", float: "right", marginBottom: "4px"}}>
+              <Button>
+                <a target="_blank" href="https://backpack-nu.vercel.app/api/download/stock-out-history">
+                  Xuất kho
+                </a>
+              </Button>
+              <Button>
+                <a target="_blank" href="https://backpack-nu.vercel.app/api/download/stock-history">
+                  Tồn kho
+                </a>
+              </Button>
+              <Button>
+                <a target="_blank" href="https://backpack-nu.vercel.app/api/download/stock-in-history">
+                  Nhập kho
+                </a>
+              </Button>
+            </div>
             <div className="admin-table__info">
               <table className="admin-table__info--show">
                 <thead className="admin-table__info--title">
@@ -132,23 +149,28 @@ function ProductsPage() {
                             src={`${product.images[0]}`}
                           />{" "}
                         </td>{" "}
-                        <td> {product.name} </td>{" "}
-                        <td> {product.price} </td>{" "}
+                        <td> {product.name} </td> <td> {product.price} </td>{" "}
                         <td> {product.stock} </td> <td> {product.type} </td>{" "}
                         <td>
-                          <div style={{display: 'flex', justifyContent:'center', alignItems: 'center'}}>
-                          <Link
-                            style={{marginRight: '6px'}}
-                            onClick={() => handleEditProduct(product)}
-                            to={`/admin/editproduct/${product._id}`}
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                            }}
                           >
-                            <FiEdit />
-                          </Link>{" "}
-                          <AiOutlineDelete
-                            onClick={() =>
-                              alertDelete(product.name, product.id)
-                            }
-                          />{" "}
+                            <Link
+                              style={{ marginRight: "6px" }}
+                              onClick={() => handleEditProduct(product)}
+                              to={`/admin/editproduct/${product._id}`}
+                            >
+                              <FiEdit />
+                            </Link>{" "}
+                            <AiOutlineDelete
+                              onClick={() =>
+                                alertDelete(product.name, product._id)
+                              }
+                            />{" "}
                           </div>
                         </td>{" "}
                       </tr>

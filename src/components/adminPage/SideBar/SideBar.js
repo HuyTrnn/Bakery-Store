@@ -39,10 +39,10 @@ function SideBar() {
                     <MenuItem component={<Link to="/admin/carts" />}>Tổng đơn hàng</MenuItem>
                     
                 </SubMenu>
-                <SubMenu icon={<BsFillPersonFill/>}  label="Khách hàng"> 
+                {/* <SubMenu icon={<BsFillPersonFill/>}  label="Khách hàng"> 
                     <MenuItem component={<Link to="/admin/customers"/>}> Khách hàng </MenuItem>
                     <MenuItem component={<Link to="/admin/staffs" />}> Nhân viên </MenuItem>
-                </SubMenu>
+                </SubMenu> */}
                 <SubMenu icon={<TbDiscount2/>} component={<Link  />} label="Sản phẩm"> 
                     <MenuItem component={<Link to="/admin/products"/>} >Danh sách sản phẩm</MenuItem>
                     <SubMenu label="Chỉnh sửa Sản Phẩm">

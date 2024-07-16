@@ -62,7 +62,6 @@ function AboutPage() {
   useEffect(() => {
     fecthJob();
   }, [lang]);
-  console.log('test', hiring);
   return (
     <div className={cx("wrapper")}>
       <Helmet>
@@ -134,7 +133,9 @@ function AboutPage() {
           </div>
           <div className={cx("row")}>
             {" "}
-            {hiring.map((item,index ) => (
+            {hiring &&
+            hiring.length > 0 &&
+            hiring.map((item,index ) => (
               <div key={index} className={cx("col", "l-4", "m-4", "c-12")}>
                 <div className={cx("cart--container")}>
                   <div className={cx("cart--image")}>

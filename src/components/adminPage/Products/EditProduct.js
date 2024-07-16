@@ -119,7 +119,7 @@ function EditProduct({ match }) {
     formData.append(`name[${key}]`, name);
     formData.append("type", productType);
     formData.append("price", price);
-    formData.append("unit", productTypeName);
+    // formData.append("unit", productTypeName);
     formData.append("stock", stock);
     formData.append("promotion_price", 0);
     formData.append("new", 1);
